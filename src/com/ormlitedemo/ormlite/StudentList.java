@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 
 
-import com.ormlitedemo.activity.MainActivity;
+import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.bean.Student;  
 import com.ormlitedemo.db.DatabaseHelper;  
 import com.ormlitedemo.wifi.MyWifiActivity;
@@ -40,7 +40,7 @@ import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;  
 import com.j256.ormlite.dao.Dao;  
 
-public class Studentlist extends OrmLiteBaseActivity<DatabaseHelper> {
+public class StudentList extends OrmLiteBaseActivity<DatabaseHelper> {
 	   
     private Context mContext;  
     private ListView lvStudents;  
@@ -62,7 +62,7 @@ public class Studentlist extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        setContentView(R.layout.student);  
+        setContentView(R.layout.student_list);  
         mContext = getApplicationContext();  
         
         dataTimer = new Timer("Light");
@@ -138,7 +138,7 @@ public class Studentlist extends OrmLiteBaseActivity<DatabaseHelper> {
     private void viewListViewItem(int position){  
         mStudent = students.get(position);  
         Intent intent = new Intent();  
-        intent.setClass(mContext, MainActivity.class);  
+        intent.setClass(mContext, HomeActivity.class);  
         intent.putExtra("action", "viewone");  
         intent.putExtra("entity", mStudent);  
         startActivity(intent);  
@@ -150,7 +150,7 @@ public class Studentlist extends OrmLiteBaseActivity<DatabaseHelper> {
     private void editListViewItem(int position){  
         mStudent = students.get(position);  
         Intent intent = new Intent();  
-        intent.setClass(mContext, MainActivity.class);  
+        intent.setClass(mContext, HomeActivity.class);  
         intent.putExtra("action", "edit");  
         intent.putExtra("entity", mStudent);  
         startActivity(intent);  
@@ -162,7 +162,7 @@ public class Studentlist extends OrmLiteBaseActivity<DatabaseHelper> {
      */  
     private void deleteListViewItem(int position){  
         final int pos = position;  
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(Studentlist.this);  
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(StudentList.this);  
         builder2.setIcon(android.R.drawable.ic_dialog_alert)  
                 .setTitle("警告")  
                 .setMessage("确定要删除该记录");  

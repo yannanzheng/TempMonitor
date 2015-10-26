@@ -3,7 +3,7 @@ package com.ormlitedemo.bean;
 import java.io.Serializable;  
 
 import com.j256.ormlite.field.DatabaseField; 
-import com.ormlitedemo.activity.MainActivity;
+import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.wifi.MyWifiActivity;
 
 public class Student implements Serializable{

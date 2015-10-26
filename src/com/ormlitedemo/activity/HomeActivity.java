@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.db.DatabaseHelper;
-import com.ormlitedemo.ormlite.Studentlist;
+import com.ormlitedemo.ormlite.StudentList;
 import com.ormlitedemo.wifi.MyWifiActivity;
 import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
+public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
 	private EditText stuNO;
 	private EditText stuName;
@@ -50,7 +50,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.homeactivity);
 
 		initializeViews();
 
@@ -137,12 +137,12 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			break;
 		case MENU_VIEWALL:
 			Intent intent = new Intent();
-			intent.setClass(MainActivity.this, Studentlist.class);
+			intent.setClass(HomeActivity.this, StudentList.class);
 			startActivity(intent);
 			break;
 		case MENU_DATA:
 			Intent intentData = new Intent();
-			intentData.setClass(MainActivity.this, MyWifiActivity.class);
+			intentData.setClass(HomeActivity.this, MyWifiActivity.class);
 			startActivity(intentData);
 			break;
 		case MENU_EDIT:
