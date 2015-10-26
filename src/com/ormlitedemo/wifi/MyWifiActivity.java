@@ -1,46 +1,49 @@
 package com.ormlitedemo.wifi;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.example.ormlitedemo.R;
-import com.ormlitedemo.ormlite.MainActivity;
-
-import android.R.integer;
 import android.app.Activity;
-import android.net.wifi.WifiEnterpriseConfig.Eap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.example.ormlitedemo.R;
+
+/**
+ * TODO 应该改造成一个服务，在打开主界面的时候就开启。
+ * 该类驱动体温的改变。
+ * 不断接受来自硬件端的数据
+ * @author jfy
+ *
+ */
 public class MyWifiActivity extends Activity{
+	private static final String TAG="MyWifiActivity";
 	 private Button wifi_start_bt;
 	 private EditText dataview;
 	 Socket socket;
-	 String str;
+	 
 	 StringBuffer text;
-	 public static StringBuffer strTemp,strNO;
+	 
+	 /**
+	  * 存储体温数据
+	  */
+	 public static StringBuffer strTemp;
+	 public static StringBuffer strNO;
 	 byte[] buf;
 	 int length = 0;
 	 
 	 private Timer dataTimer;
 	 private TimerTask dataTimerTask = null;
 
-	    
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.activity_mywifi);
 	        new Thread(new MySocket()).start();
-	  //      test();
 
             dataview = (EditText) findViewById(R.id.dataview);
 	        wifi_start_bt = (Button) findViewById(R.id.wifi_start_bt );
@@ -63,7 +66,7 @@ public class MyWifiActivity extends Activity{
 	    }
 	    
 	    
-	    //接收到的数据更新显示
+	    //接收到的数据更新显示，测试
 	    public void updateData() {
 			runOnUiThread(new Runnable() {
 				@Override
@@ -73,23 +76,6 @@ public class MyWifiActivity extends Activity{
 				}
 			});
 		}
-	    
-	    //g关于字符转化的测试函数
-	    public void test(){
-	    	
-	    	char[] datas = new char[] {0xff,01,0xea,00,12,46,00,07,24,0xc8,06};
-	    	 for (int i=0;i<11;i++){
-                 System.out.print(datas[i]);
-                 System.out.print(String.valueOf(datas[i]));;
-             }
-	    	 str = new String(datas);   //字符串转换乱码
-	    	 System.out.println("字符串：" + str);
-	    	 
-	    	 StringBuffer text1 = new StringBuffer();
-	    	 text1.append(datas[0]).append(datas).append("\n");
-	    	 System.out.print("test:" + text1);
-	    }
-	    
 
 	    //创建socket内部类，新建线程实时接收数据
 	    class MySocket implements Runnable{

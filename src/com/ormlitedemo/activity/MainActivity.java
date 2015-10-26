@@ -1,4 +1,4 @@
-package com.ormlitedemo.ormlite;
+package com.ormlitedemo.activity;
 
 import java.sql.SQLException;
 import java.util.Timer;
@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.ormlite.Studentlist;
 import com.ormlitedemo.wifi.MyWifiActivity;
 import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -25,7 +26,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	private EditText stuName;
 	private EditText stuAge;
 	private EditText stuSex;
-	static EditText stuScore;
+	static EditText stuTemper;
 	private EditText stuAddress;
 
 	private Student mStudent;
@@ -53,6 +54,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
 		initializeViews();
 
+		//定时器
 		dataTimer = new Timer("Light");
 		dataTimerTask = new TimerTask() {
 			@Override
@@ -61,6 +63,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			}
 		};
 
+		//定时
 		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
 
 	}
@@ -73,7 +76,7 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 		stuName = (EditText) findViewById(R.id.name);
 		stuAge = (EditText) findViewById(R.id.age);
 		stuSex = (EditText) findViewById(R.id.sex);
-		stuScore = (EditText) findViewById(R.id.score);
+		stuTemper = (EditText) findViewById(R.id.temper);
 		stuAddress = (EditText) findViewById(R.id.address);
 
 		mBundle = getIntent().getExtras();
@@ -185,17 +188,20 @@ public class MainActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 		stuName.setText(student.getName());
 		stuAge.setText(String.valueOf(student.getAge()));
 		stuSex.setText(student.getSex());
-		stuScore.setText(student.getScore());
+		stuTemper.setText(student.getScore());
 		// stuScore.setText(MyWifiActivity.strTemp);
 		stuAddress.setText(student.getAddress());
 		updateTemp();
 	}
 
+	/**
+	 * 更新ui
+	 */
 	public void updateTemp() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				stuScore.setText(MyWifiActivity.strTemp);
+				stuTemper.setText(MyWifiActivity.strTemp);
 			}
 		});
 	}

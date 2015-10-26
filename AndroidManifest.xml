@@ -25,7 +25,7 @@
         <uses-library android:name="android.test.runner" />
 
         <activity
-            android:name="com.ormlitedemo.ormlite.MainActivity"
+            android:name="com.ormlitedemo.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
