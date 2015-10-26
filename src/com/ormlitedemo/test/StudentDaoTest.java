@@ -116,7 +116,6 @@ public class StudentDaoTest {
 				Log.i(TAG, "學生為:"+stu.toString());
 			}else {
 				Log.i(TAG, "还没有学生");
-				//System.out.println("還沒有學生");
 			}
 		}
 	}

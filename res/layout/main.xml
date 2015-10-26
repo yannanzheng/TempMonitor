@@ -2,89 +2,122 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:background="@drawable/bg15"
-    android:padding="5dip">
-    
-     <TextView    
-         android:layout_width="fill_parent"  android:layout_height="wrap_content"  
-         android:gravity="center" android:text="Students-information"/>  
-    <LinearLayout  
-         android:layout_width="fill_parent" android:layout_height="wrap_content"  
-         android:orientation="horizontal" android:padding="1dip" android:gravity="center_vertical">  
-       <TextView
-           android:layout_width="wrap_content" 
-           android:layout_height="wrap_content"  
-           android:text="学号: "/>  
-       <EditText  
-           android:id="@+id/stuno"  
-           android:layout_width="fill_parent" 
-           android:layout_height="wrap_content"/>  
-    </LinearLayout>  
-    
+    android:orientation="vertical"
+    android:padding="5dip" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Students-information" />
+
     <LinearLayout
-        android:layout_width="fill_parent" android:layout_height="wrap_content"  
-        android:orientation="horizontal" android:padding="1dip" android:gravity="center_vertical">  
-       <TextView   
-           android:layout_width="wrap_content"  
-           android:layout_height="wrap_content"  
-           android:text="姓名: "/>  
-       <EditText  
-           android:id="@+id/name"  
-           android:layout_width="fill_parent"  
-           android:layout_height="wrap_content"/>  
-    </LinearLayout>  
-    
-    <LinearLayout  
-        android:layout_width="fill_parent" android:layout_height="wrap_content"  
-        android:orientation="horizontal" android:padding="1dip" android:gravity="center_vertical">  
-       <TextView   
-           android:layout_width="wrap_content"  
-           android:layout_height="wrap_content"  
-           android:text="年龄: "/>  
-       <EditText  
-           android:id="@+id/age"  
-           android:layout_width="fill_parent"  
-           android:layout_height="wrap_content"/>  
-    </LinearLayout>  
-    
-    <LinearLayout  
-       android:layout_width="fill_parent" android:layout_height="wrap_content"  
-       android:orientation="horizontal" android:padding="1dip" android:gravity="center_vertical">  
-       <TextView   
-          android:layout_width="wrap_content"  
-          android:layout_height="wrap_content"  
-          android:text="性别: "/>  
-       <EditText  
-          android:id="@+id/sex"  
-          android:layout_width="fill_parent"  
-          android:layout_height="wrap_content"/>  
-    </LinearLayout>  
-    
-    <LinearLayout  
-       android:layout_width="fill_parent" android:layout_height="wrap_content"  
-       android:orientation="horizontal" android:padding="1dip" android:gravity="center_vertical">  
-       <TextView   
-          android:layout_width="wrap_content"  
-          android:layout_height="wrap_content"  
-          android:text="体温: "/>  
-       <EditText  
-          android:id="@+id/score"  
-          android:layout_width="fill_parent"  
-          android:layout_height="wrap_content"/>  
-    </LinearLayout>  
-    
-    <LinearLayout  
-       android:layout_width="fill_parent" android:layout_height="wrap_content"  
-       android:orientation="horizontal" android:padding="1dip" android:gravity="center_vertical">  
-       <TextView   
-          android:layout_width="wrap_content"  
-          android:layout_height="wrap_content"  
-          android:text="地址: "/>  
-       <EditText  
-          android:id="@+id/address"  
-          android:layout_width="fill_parent"  
-          android:layout_height="wrap_content"/>  
-    </LinearLayout>  
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="学号: " />
+
+        <EditText
+            android:id="@+id/stuno"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名: " />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年龄: " />
+
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="性别: " />
+
+        <EditText
+            android:id="@+id/sex"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="体温: " />
+
+        <EditText
+            android:id="@+id/score"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地址: " />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>
