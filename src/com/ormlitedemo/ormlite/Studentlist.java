@@ -105,7 +105,7 @@ public class Studentlist extends OrmLiteBaseActivity<DatabaseHelper> {
         switch (item.getItemId()) {  
         case MENU_VIEW:  
             viewListViewItem(position);  
-            break;  
+            break; 
         case MENU_EDIT:  
             editListViewItem(position);  
             break;  
