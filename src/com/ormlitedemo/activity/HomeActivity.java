@@ -6,7 +6,6 @@ import java.util.TimerTask;
 
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.db.DatabaseHelper;
-import com.ormlitedemo.ormlite.StudentList;
 import com.ormlitedemo.wifi.MyWifiActivity;
 import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -137,7 +136,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			break;
 		case MENU_VIEWALL:
 			Intent intent = new Intent();
-			intent.setClass(HomeActivity.this, StudentList.class);
+			intent.setClass(HomeActivity.this, StudentListActivity.class);
 			startActivity(intent);
 			break;
 		case MENU_DATA:

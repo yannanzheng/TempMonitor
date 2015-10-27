@@ -1,4 +1,4 @@
-package com.ormlitedemo.ormlite;
+package com.ormlitedemo.activity;
 
 
 import java.sql.SQLException;  
@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 
 
-import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.bean.Student;  
 import com.ormlitedemo.db.DatabaseHelper;  
 import com.ormlitedemo.wifi.MyWifiActivity;
@@ -40,7 +39,7 @@ import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;  
 import com.j256.ormlite.dao.Dao;  
 
-public class StudentList extends OrmLiteBaseActivity<DatabaseHelper> {
+public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	   
     private Context mContext;  
     private ListView lvStudents;  
@@ -162,7 +161,7 @@ public class StudentList extends OrmLiteBaseActivity<DatabaseHelper> {
      */  
     private void deleteListViewItem(int position){  
         final int pos = position;  
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(StudentList.this);  
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(StudentListActivity.this);  
         builder2.setIcon(android.R.drawable.ic_dialog_alert)  
                 .setTitle("警告")  
                 .setMessage("确定要删除该记录");  

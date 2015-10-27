@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ormlitedemo.ormlite.StudentList"
+            android:name="com.ormlitedemo.activity.StudentListActivity"
             android:label="@string/app_name" >
         </activity>
         <activity

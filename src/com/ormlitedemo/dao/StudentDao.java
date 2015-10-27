@@ -11,9 +11,9 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.ormlitedemo.activity.HomeActivity;
+import com.ormlitedemo.activity.StudentListActivity;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.db.DatabaseHelper;
-import com.ormlitedemo.ormlite.StudentList;
 /**
  * Êý¾Ý¿â²Ù×÷
  */
