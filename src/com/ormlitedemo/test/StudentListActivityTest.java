@@ -4,5 +4,9 @@ import android.test.AndroidTestCase;
 
 public class StudentListActivityTest extends AndroidTestCase {
 
-	
+	public void testNotifyDataSetChange(){
+		
+		
+		
+	}
 }

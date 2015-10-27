@@ -47,6 +47,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     
     private Dao<Student,String> stuDao;  
     private List<Student> students;  
+    private List<Student> adapterStudents;  
     private StudentsAdapter adapter;  
     private Student mStudent; 
     StringBuffer temp;
@@ -71,7 +72,8 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
  		dataTimerTask = new TimerTask() {
  			@Override
  			public void run() {
- 				temp = TemperData.strTemp;	
+ 				temp = TemperData.strTemp;
+ 				
  			}
  		};
  		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
@@ -81,7 +83,9 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         
         queryListViewItem();
         
-        adapter = new StudentsAdapter(students);  
+        
+        adapter = new StudentsAdapter(students); 
+        
      	stuListView.setAdapter(adapter); 
      	
      	adapter.notifyDataSetChanged();
@@ -192,6 +196,8 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         builder2.show();  
     }  
       
+    
+    
     class StudentsAdapter extends BaseAdapter{  
           
         private List<Student> listStu;  
@@ -233,8 +239,8 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             Student objStu = listStu.get(position);  
             holder.student_number_tv.setText(objStu.getDeviceID());  
             holder.student_name_tv.setText(objStu.getName());  
-            //holder.student_temper_tv.setText(objStu.getTemper());
-            holder.student_temper_tv.setText("36.5摄氏度");
+            holder.student_temper_tv.setText(objStu.getTemper());
+            //holder.student_temper_tv.setText("36.5摄氏度");
        
             //做颜色标记
             if ("107743" == objStu.getDeviceID())
@@ -242,9 +248,6 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             
             return convertView;  
         }         
-        
-        
-        
     }  
       
     static class ViewHolder{  
