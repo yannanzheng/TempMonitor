@@ -27,7 +27,7 @@ public class StudentDaoTest {
 		List<Student> stus=new ArrayList<Student>();
 		
 		Student stu1=new Student();
-		stu1.setStuNO(1+"");
+		stu1.setDeviceID(1+"");
 		stu1.setName("zhangsan");
 		stu1.setAge(2);
 		Log.i(TAG, "Ñ§Éú1£º"+stu1.toString());
@@ -37,12 +37,12 @@ public class StudentDaoTest {
 		Student stu4=new Student();
 		Student stu5=new Student();
 		Student stu6=new Student();
-		stu2.setStuNO(2+"");
+		stu2.setDeviceID(2+"");
 		stu2.setName("Lisi");
-		stu3.setStuNO(3+"");
-		stu4.setStuNO(4+"");
-		stu5.setStuNO(5+"");
-		stu6.setStuNO(6+"");
+		stu3.setDeviceID(3+"");
+		stu4.setDeviceID(4+"");
+		stu5.setDeviceID(5+"");
+		stu6.setDeviceID(6+"");
 		stu5.setName("wangwu");
 		
 		Context context=getContext();
@@ -88,12 +88,12 @@ public class StudentDaoTest {
 		Student stu2=new Student();
 		Student stu3=new Student();
 		Student stu4=new Student();
-		stu1.setStuNO(1+"");
+		stu1.setDeviceID(1+"");
 		stu1.setName("zhangsan");
-		stu2.setStuNO(2+"");
+		stu2.setDeviceID(2+"");
 		stu2.setName("Lisi");
-		stu3.setStuNO(3+"");
-		stu4.setStuNO(4+"");
+		stu3.setDeviceID(3+"");
+		stu4.setDeviceID(4+"");
 		Student stu=new Student();
 		StudentDao dao=new StudentDao(getContext());
 		dao.addStudent(stu1);
@@ -102,7 +102,7 @@ public class StudentDaoTest {
 		dao.addStudent(stu4);
 		
 		
-		stu.setStuNO("8");
+		stu.setDeviceID("8");
 		boolean right=dao.addStudent(stu);
 		assertEquals(right, true);
 		

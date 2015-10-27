@@ -168,7 +168,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	 */
 	private void getStudentData() {
 		mStudent = new Student();
-		mStudent.setStuNO(stuNO.getText().toString());
+		mStudent.setDeviceID(stuNO.getText().toString());
 		mStudent.setName(stuName.getText().toString());
 		mStudent.setAge(Integer.parseInt(stuAge.getText().toString()));
 		mStudent.setSex(stuSex.getText().toString());
@@ -184,11 +184,11 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	 * @param student
 	 */
 	private void setStudentUIData(Student student) {
-		stuNO.setText(student.getStuNO());
+		stuNO.setText(student.getDeviceID());
 		stuName.setText(student.getName());
 		stuAge.setText(String.valueOf(student.getAge()));
 		stuSex.setText(student.getSex());
-		stuTemper.setText(student.getScore());
+		stuTemper.setText(student.getTemper());
 		// stuScore.setText(MyWifiActivity.strTemp);
 		stuAddress.setText(student.getAddress());
 		updateTemp();

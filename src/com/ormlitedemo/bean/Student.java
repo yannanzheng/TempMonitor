@@ -11,7 +11,7 @@ public class Student implements Serializable{
 	private static final long serialVersionUID = -5683263669918171030L;  
     
     @DatabaseField(id=true)  
-    private String stuNO;  
+    private String deviceID;  
     @DatabaseField  
     private String name;  
     @DatabaseField  
@@ -20,18 +20,18 @@ public class Student implements Serializable{
     private String sex;  
     @DatabaseField  
    // private double score;  
-    private String score;
+    private String temper;
     @DatabaseField  
     private String address;  
       
-    public String getStuNO() {  
-        return stuNO;  
-    }  
-    public void setStuNO(String stuNO) {  
-        this.stuNO = stuNO;  
-    }  
-      
-    public String getName() {  
+    public String getDeviceID() {
+		return deviceID;
+	}
+	public void setDeviceID(String deviceID) {
+		this.deviceID = deviceID;
+	}
+	
+	public String getName() {  
         return name;  
     }  
     public void setName(String name) {  
@@ -52,13 +52,15 @@ public class Student implements Serializable{
         this.sex = sex;  
     }  
       
-    public String getScore() {  
-        return score;  
-    }  
-    public void setScore() {  
-        this.score = TemperData.strTemp.toString();  
-    }  
-   /* public String getScore() {  
+     
+     
+   public String getTemper() {
+		return temper;
+	}
+	public void setTemper(String temper) {
+		this.temper = temper;
+	}
+	/* public String getScore() {  
         return MyWifiActivity.strTemp.toString(); 
     }  
 */
@@ -71,8 +73,8 @@ public class Student implements Serializable{
     
     @Override
 	public String toString() {
-		return "Student [stuNO=" + getStuNO() + ", name=" + getName() + ", age=" + getAge()
-				+ ", sex=" + getSex() + ", score=" + getScore() + ", address=" + getAddress()
+		return "Student [stuNO=" + getDeviceID() + ", name=" + getName() + ", age=" + getAge()
+				+ ", sex=" + getSex() + ", score=" + getTemper() + ", address=" + getAddress()
 				+ "]";
 	}  
 

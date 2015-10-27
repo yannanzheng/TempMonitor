@@ -45,7 +45,7 @@ public class StudentDao {
 					if (!isExistStudent(stuNO)) {
 						Log.i(TAG, "addStudent 该学生不存在");
 						Student stu = new Student();
-						stu.setStuNO(stuNO);
+						stu.setDeviceID(stuNO);
 						stu.setAddress("00");
 						stu.setAge(00);
 						stu.setName("00");
@@ -66,7 +66,7 @@ public class StudentDao {
 			
 			if (!(stu==null)) {
 				Log.i(TAG, "addStudent stu不为空");
-				String stuNO=stu.getStuNO();
+				String stuNO=stu.getDeviceID();
 				if (!(stuNO==null)) {
 					Log.i(TAG, "addStudent stuNO不为空");
 					if (!isExistStudent(stuNO)) {

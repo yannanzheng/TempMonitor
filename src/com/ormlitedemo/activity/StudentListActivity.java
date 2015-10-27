@@ -44,6 +44,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	   
     private Context mContext;  
     private ListView stuListView;  
+    
     private Dao<Student,String> stuDao;  
     private List<Student> students;  
     private StudentsAdapter adapter;  
@@ -65,6 +66,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         setContentView(R.layout.student_list);  
         mContext = getApplicationContext();  
         
+        //定时器
         dataTimer = new Timer("Light");
  		dataTimerTask = new TimerTask() {
  			@Override
@@ -201,7 +203,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
   
         @Override  
         public int getCount() {  
-            return listStu.size();  
+            return listStu.size();  //空指针异常
         }  
   
         @Override  
@@ -218,43 +220,37 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         public View getView(int position, View convertView, ViewGroup parent) {  
             ViewHolder holder;  
             if(convertView == null){  
-                LayoutInflater mInflater = (LayoutInflater) mContext  
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
-                convertView = mInflater.inflate(R.layout.studentitem, null);  
+                convertView = View.inflate(mContext, R.layout.studentitem, null);  
                 holder = new ViewHolder();  
-                holder.tvNO = (TextView)convertView.findViewById(R.id.itemno);  
-                holder.tvName = (TextView)convertView.findViewById(R.id.itemname);  
-                holder.tvScore = (TextView)convertView.findViewById(R.id.itemscore);  
+                holder.student_number_tv = (TextView)convertView.findViewById(R.id.student_number_tv);  
+                holder.student_name_tv = (TextView)convertView.findViewById(R.id.student_name_tv);  
+                holder.student_temper_tv = (TextView)convertView.findViewById(R.id.student_temper_tv);  
                 convertView.setTag(holder);  
             }else{  
                 holder = (ViewHolder)convertView.getTag();  
             }  
               
             Student objStu = listStu.get(position);  
-            holder.tvNO.setText(objStu.getStuNO());  
-            holder.tvName.setText(objStu.getName());  
-            holder.tvScore.setText(objStu.getScore());
+            holder.student_number_tv.setText(objStu.getDeviceID());  
+            holder.student_name_tv.setText(objStu.getName());  
+            //holder.student_temper_tv.setText(objStu.getTemper());
+            holder.student_temper_tv.setText("36.5摄氏度");
        
             //做颜色标记
-            if ("107743" == objStu.getStuNO())
-                 holder.tvScore.setTextColor(android.graphics.Color.RED);
+            if ("107743" == objStu.getDeviceID())
+                 holder.student_temper_tv.setTextColor(android.graphics.Color.RED);
             
             return convertView;  
         }         
         
-        @Override
-        public void notifyDataSetChanged() {
-        	// TODO Auto-generated method stub
-        	super.notifyDataSetChanged();
-        }
         
         
     }  
       
     static class ViewHolder{  
-        TextView tvNO;  
-        TextView tvName;  
-        TextView tvScore;  
+        TextView student_number_tv;  
+        TextView student_name_tv;  
+        TextView student_temper_tv;  
     }  
 
 
