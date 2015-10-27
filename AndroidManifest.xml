@@ -25,17 +25,18 @@
         <uses-library android:name="android.test.runner" />
 
         <activity
+            android:name="com.ormlitedemo.activity.StudentDetailActivity"
+            android:label="@string/app_name" >
+            
+        </activity>
+        <activity
             android:name="com.ormlitedemo.activity.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.ormlitedemo.activity.StudentListActivity"
-            android:label="@string/app_name" >
+            
         </activity>
         <activity
             android:name="com.ormlitedemo.wifi.MyWifiActivity"

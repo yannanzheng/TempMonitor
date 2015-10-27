@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.j256.ormlite.field.DatabaseField; 
 import com.ormlitedemo.TemperData;
-import com.ormlitedemo.activity.HomeActivity;
+import com.ormlitedemo.activity.StudentDetailActivity;
 import com.ormlitedemo.wifi.MyWifiActivity;
 
 public class Student implements Serializable{
