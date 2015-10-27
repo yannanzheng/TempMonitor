@@ -1,24 +1,22 @@
 package com.ormlitedemo.activity;
 
-import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.ormlitedemo.TemperData;
-import com.ormlitedemo.bean.Student;
-import com.ormlitedemo.db.DatabaseHelper;
-import com.ormlitedemo.wifi.MyWifiActivity;
-import com.example.ormlitedemo.R;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.Dao;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.ormlitedemo.R;
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.ormlitedemo.TemperData;
+import com.ormlitedemo.bean.Student;
+import com.ormlitedemo.dao.StudentDao;
+import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.wifi.MyWifiActivity;
 
 public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 
@@ -30,7 +28,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	private EditText stuAddress;
 
 	private Student mStudent;
-	private Dao<Student, String> stuDao;
+	private StudentDao stuDao;
 
 	private Timer dataTimer;
 	private TimerTask dataTimerTask = null;
@@ -120,20 +118,20 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_ADD:
-			try {
-				stuDao = getHelper().getStudentDao();
+			
+				stuDao = StudentDao.getStudentDao(getApplicationContext());
 				getStudentData();
+				
 				if (mStudent != null) {
 					// 创建记录项
-					stuDao.create(mStudent);
+					stuDao.addStudent(mStudent);
+					
 				} else {
 					// 编辑时信息不能为空
 					Toast.makeText(getApplicationContext(), "用户信息不能为空",
 							Toast.LENGTH_LONG);
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			 
 			break;
 		case MENU_VIEWALL:
 			Intent intent = new Intent();
@@ -146,16 +144,14 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			startActivity(intentData);
 			break;
 		case MENU_EDIT:
-			try {
+			
 				getStudentData();
-				stuDao = getHelper().getStudentDao();
+				stuDao = StudentDao.getStudentDao(getApplicationContext());
 				if (mStudent != null) {
 					// 更新某记录项
-					stuDao.update(mStudent);
+					stuDao.updateStudent(mStudent);
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			
 			break;
 		default:
 			break;

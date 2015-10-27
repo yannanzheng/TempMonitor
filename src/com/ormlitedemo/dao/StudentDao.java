@@ -18,16 +18,16 @@ import com.ormlitedemo.db.DatabaseHelper;
  * 数据库操作
  */
 public class StudentDao {
-	private Context context=null;
-	private Dao<Student, String> studentDaoOpe;
+	
+	private Dao<Student, String> daoOpe;
 	private DatabaseHelper helper;
 	private static final String TAG="STUDENTDAO";
+	private  static StudentDao stuDao=null;
 	
-	public StudentDao(Context contxt) {
-		this.context=context;
+	private StudentDao(Context contxt) {
 		try {
 			helper=DatabaseHelper.getHelper(contxt);
-			studentDaoOpe=helper.getStudentDao();
+			daoOpe=this.getSingleOrmliteDao();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -35,11 +35,30 @@ public class StudentDao {
 	}
 	
 	
+	
+	 public Dao<Student,String> getSingleOrmliteDao() throws SQLException{  
+	        if(daoOpe == null){  
+	        	daoOpe = helper.getDao(Student.class);  
+	        }  
+	        return daoOpe;  
+	    }  
+	
+	public static StudentDao getStudentDao(Context contxt){
+		if(stuDao == null){
+			return new StudentDao(contxt);
+		}
+		
+		return stuDao;
+		
+		
+	}
+	
+	
 	/**
 	 * 对接收的数据进行数据库匹配，若没有该用户，则进行添加
 	 * @param stu
 	 */
-	public boolean addStudent(String stuNO){
+	public boolean addStudentByID(String stuNO){
 		try {
 			
 					if (!isExistStudent(stuNO)) {
@@ -50,7 +69,7 @@ public class StudentDao {
 						stu.setAge(00);
 						stu.setName("00");
 						stu.setSex("00");
-						studentDaoOpe.createOrUpdate(stu);
+						daoOpe.create(stu);
 						return true;
 					}else{
 						Log.i(TAG, "addStudent 该学生已存在");
@@ -73,7 +92,7 @@ public class StudentDao {
 						Log.i(TAG, "addStudent 该学生不存在");
 						
 						//stucentDaoOpe.create(stu);
-						studentDaoOpe.createOrUpdate(stu);
+						daoOpe.createOrUpdate(stu);
 						Log.i(TAG, "addStudent 该学生存在"+stu.toString());
 						
 						return true;
@@ -112,7 +131,7 @@ public class StudentDao {
 		
 		Student stu=null;
 		try {
-			stu = studentDaoOpe.queryForId(stuNO);
+			stu = daoOpe.queryForId(stuNO);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -128,7 +147,7 @@ public class StudentDao {
 	public List<Student> getAllStudent(){
 		List<Student> stus=new ArrayList<Student>();
 		try {
-			stus=studentDaoOpe.queryForAll();
+			stus=daoOpe.queryForAll();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -145,9 +164,9 @@ public class StudentDao {
 	 */
 	public boolean updateStudent(Student stu){
 		try {
-			Student dbStu=studentDaoOpe.queryForSameId(stu);
+			Student dbStu=daoOpe.queryForSameId(stu);
 			if (!dbStu.equals(stu)) {
-				studentDaoOpe.update(stu);
+				daoOpe.update(stu);
 				return true;
 			}
 		} catch (SQLException e) {
@@ -166,7 +185,7 @@ public class StudentDao {
 	 */
 	public boolean deleteStudentByID(String stuNO){
 		try {
-			studentDaoOpe.deleteById(stuNO);
+			daoOpe.deleteById(stuNO);
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -174,6 +193,17 @@ public class StudentDao {
 			return false;
 		}
 		
+	}
+	
+	public boolean deleteStudent(Student stu){
+		try {
+			daoOpe.delete(stu);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	

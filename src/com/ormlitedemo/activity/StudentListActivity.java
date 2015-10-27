@@ -1,53 +1,42 @@
 package com.ormlitedemo.activity;
 
 
-import java.sql.SQLException;  
-import java.util.List;  
-  
-
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.R.string;
-import android.app.AlertDialog;  
-import android.content.Context;  
-import android.content.DialogInterface;  
-import android.content.Intent;  
-import android.os.Bundle;  
-import android.view.ContextMenu;  
-import android.view.ContextMenu.ContextMenuInfo;  
-import android.view.LayoutInflater;  
-import android.view.Menu;  
-import android.view.MenuItem;  
-import android.view.View;  
-import android.view.ViewGroup;  
-import android.widget.AdapterView.AdapterContextMenuInfo;  
-import android.widget.BaseAdapter;  
-import android.widget.ListView;  
-import android.widget.TextView;  
-  
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
-
-
-
-
-import com.ormlitedemo.TemperData;
-import com.ormlitedemo.bean.Student;  
-import com.ormlitedemo.db.DatabaseHelper;  
-import com.ormlitedemo.wifi.MyWifiActivity;
 import com.example.ormlitedemo.R;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;  
-import com.j256.ormlite.dao.Dao;  
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.ormlitedemo.TemperData;
+import com.ormlitedemo.bean.Student;
+import com.ormlitedemo.dao.StudentDao;
+import com.ormlitedemo.db.DatabaseHelper;
 
 public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	   
     private Context mContext;  
     private ListView stuListView;  
     
-    private Dao<Student,String> stuDao;  
-    private List<Student> students;  
-    private List<Student> adapterStudents;  
+    //private Dao<Student,String> stuDao; 
+    private StudentDao stuDao;
+    
+    private List<Student> allStudentsList=null;  
+    private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
     private Student mStudent; 
     StringBuffer temp;
@@ -73,6 +62,10 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
  			@Override
  			public void run() {
  				temp = TemperData.strTemp;
+ 				//queryListViewItem();
+ 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
+ 				adapterStudents.clear();
+ 				adapterStudents.addAll(allStudentsList);
  				
  			}
  		};
@@ -81,10 +74,10 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         stuListView = (ListView)findViewById(R.id.stu_lv);  
         registerForContextMenu(stuListView);  //注册上下文菜单    
         
-        queryListViewItem();
         
         
-        adapter = new StudentsAdapter(students); 
+        
+        adapter = new StudentsAdapter(adapterStudents); 
         
      	stuListView.setAdapter(adapter); 
      	
@@ -116,7 +109,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
             editListViewItem(position);  
             break;  
         case MENU_DELETE:  
-            deleteListViewItem(position);  
+            //TODO deleteListViewItem(position);  
             break;  
         default:  
             break;  
@@ -124,25 +117,23 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         return super.onContextItemSelected(item);  
     }  
       
-    /**  
-     * 查询记录项  
-     */  
-    private void queryListViewItem(){  
-        try {  
-            stuDao = getHelper().getStudentDao();  
-            //查询所有的记录项  
-            students = stuDao.queryForAll();  
-        } catch (SQLException e) {  
-            e.printStackTrace();  
-        }  
-    }  
+//    /**  
+//     * 查询记录项  
+//     */  
+//    private void queryListViewItem(){  
+//         
+//            stuDao = StudentDao.getStudentDao(getApplicationContext());  
+//            //查询所有的记录项  
+//            students = stuDao.getAllStudent();  
+//         
+//    }  
       
     /**  
      * 查看记录项  
      * @param position  
      */  
     private void viewListViewItem(int position){  
-        mStudent = students.get(position);  
+        mStudent = allStudentsList.get(position);  
         Intent intent = new Intent();  
         intent.setClass(mContext, HomeActivity.class);  
         intent.putExtra("action", "viewone");  
@@ -154,7 +145,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
      * 编辑记录项  
      */  
     private void editListViewItem(int position){  
-        mStudent = students.get(position);  
+        mStudent = allStudentsList.get(position);  
         Intent intent = new Intent();  
         intent.setClass(mContext, HomeActivity.class);  
         intent.putExtra("action", "edit");  
@@ -162,40 +153,38 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         startActivity(intent);  
     }  
       
-    /**  
-     * 删除记录项  
-     * @param position  
-     */  
-    private void deleteListViewItem(int position){  
-        final int pos = position;  
-        AlertDialog.Builder builder2 = new AlertDialog.Builder(StudentListActivity.this);  
-        builder2.setIcon(android.R.drawable.ic_dialog_alert)  
-                .setTitle("警告")  
-                .setMessage("确定要删除该记录");  
-        builder2.setPositiveButton("确定", new DialogInterface.OnClickListener() {  
-              
-            @Override  
-            public void onClick(DialogInterface dialog, int which) {  
-                Student mDelStudent = (Student)stuListView.getAdapter().getItem(pos);  
-                try {  
-                    stuDao.delete(mDelStudent); //删除记录  
-                    queryListViewItem();  
-                } catch (SQLException e) {  
-                    e.printStackTrace();  
-                }  
-                  
-            }  
-        });  
-        builder2.setNegativeButton("取消", new DialogInterface.OnClickListener() {  
-              
-            @Override  
-            public void onClick(DialogInterface dialog, int which) {  
-                dialog.dismiss();  
-            }  
-        });  
-        builder2.show();  
-    }  
-      
+//    /**  
+//     * 删除记录项  
+//     * @param position  
+//     */  
+//    private void deleteListViewItem(int position){  
+//        final int pos = position;  
+//        AlertDialog.Builder builder2 = new AlertDialog.Builder(StudentListActivity.this);  
+//        builder2.setIcon(android.R.drawable.ic_dialog_alert)  
+//                .setTitle("警告")  
+//                .setMessage("确定要删除该记录");  
+//        builder2.setPositiveButton("确定", new DialogInterface.OnClickListener() {  
+//              
+//            @Override  
+//            public void onClick(DialogInterface dialog, int which) {  
+//                Student mDelStudent = (Student)stuListView.getAdapter().getItem(pos);  
+//                 
+//                    stuDao.deleteStudent(mDelStudent) ;//删除记录  
+//                    queryListViewItem();  
+//                 
+//                  
+//            }  
+//        });  
+//        builder2.setNegativeButton("取消", new DialogInterface.OnClickListener() {  
+//              
+//            @Override  
+//            public void onClick(DialogInterface dialog, int which) {  
+//                dialog.dismiss();  
+//            }  
+//        });  
+//        builder2.show();  
+//    }  
+//      
     
     
     class StudentsAdapter extends BaseAdapter{  

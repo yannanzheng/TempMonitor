@@ -46,7 +46,7 @@ public class StudentDaoTest {
 		stu5.setName("wangwu");
 		
 		Context context=getContext();
-		StudentDao dao=new StudentDao(context);
+		StudentDao dao=StudentDao.getStudentDao(getContext());
 		Log.i(TAG, "数据库里的学生有"+stus.size()+"個");
 		dao.addStudent(stu1);
 		dao.addStudent(stu2);
@@ -69,7 +69,7 @@ public class StudentDaoTest {
 	 */
 	public void testGetStudent(){
 		String stuNO="4";
-		StudentDao dao=new StudentDao(getContext());
+		StudentDao dao=StudentDao.getStudentDao(getContext());
 		Student stu=dao.getStudent(stuNO);
 		Log.i(TAG, "找到的学生是"+stu.toString());
 		
@@ -77,7 +77,7 @@ public class StudentDaoTest {
 	
 	public void testIsExistStudent() throws Exception{
 		String stuNO="1";
-		StudentDao dao=new StudentDao(getContext());
+		StudentDao dao=StudentDao.getStudentDao(getContext());
 		boolean right=dao.isExistStudent(stuNO);
 		assertEquals(right, true);
 	
@@ -95,7 +95,7 @@ public class StudentDaoTest {
 		stu3.setDeviceID(3+"");
 		stu4.setDeviceID(4+"");
 		Student stu=new Student();
-		StudentDao dao=new StudentDao(getContext());
+		StudentDao dao=StudentDao.getStudentDao(getContext());
 		dao.addStudent(stu1);
 		dao.addStudent(stu2);
 		dao.addStudent(stu3);
