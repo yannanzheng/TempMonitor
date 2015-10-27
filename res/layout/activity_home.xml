@@ -10,6 +10,7 @@
     android:layout_height="wrap_content"  
     android:gravity="center"  
     android:text="体温监控"/>  
+    
   <ListView  
     android:id="@+id/stu_lv"  
     android:layout_width="fill_parent"  

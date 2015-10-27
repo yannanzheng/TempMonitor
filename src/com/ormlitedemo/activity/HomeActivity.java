@@ -31,8 +31,6 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	   
     private Context mContext;  
     private ListView stuListView;  
-    
-    //private Dao<Student,String> stuDao; 
     private StudentDao stuDao;
     
     private List<Student> allStudentsList=null;  
@@ -53,29 +51,13 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        setContentView(R.layout.student_list);  
+        setContentView(R.layout.activity_home);  
         mContext = getApplicationContext();  
         
-        //定时器
-        dataTimer = new Timer("Light");
- 		dataTimerTask = new TimerTask() {
- 			@Override
- 			public void run() {
- 				temp = TemperData.strTemp;
- 				//queryListViewItem();
- 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
- 				adapterStudents.clear();
- 				adapterStudents.addAll(allStudentsList);
- 				
- 			}
- 		};
- 		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
+        initTimer();
           
         stuListView = (ListView)findViewById(R.id.stu_lv);  
-        registerForContextMenu(stuListView);  //注册上下文菜单    
-        
-        
-        
+        //TODO registerForContextMenu(stuListView);  //注册上下文菜单    
         
         adapter = new StudentsAdapter(adapterStudents); 
         
@@ -83,7 +65,30 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
      	
      	adapter.notifyDataSetChanged();
      
-    }  
+    }
+
+
+
+    /**
+     * 初始化定时器，每隔5s到数据库查询一次数据，并更新适配器所绑定的集合
+     */
+	private void initTimer() {
+		//定时器
+        dataTimer = new Timer("Light");
+ 		dataTimerTask = new TimerTask() {
+ 			@Override
+ 			public void run() {
+ 				temp = TemperData.strTemp;
+ 				//TODO queryListViewItem();
+ 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
+ 				adapterStudents.clear();
+ 				adapterStudents.addAll(allStudentsList);
+ 				
+ 			}
+ 		};
+ 		
+ 		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
+	}  
     
    
   
