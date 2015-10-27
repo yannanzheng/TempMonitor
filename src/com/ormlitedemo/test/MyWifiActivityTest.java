@@ -3,6 +3,8 @@ package com.ormlitedemo.test;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import com.ormlitedemo.wifi.MySocket;
+
 public class MyWifiActivityTest extends AndroidTestCase {
 	private static final String TAG="MyWifiActivityTest";
 	public void testUpdateData(){
@@ -27,6 +29,10 @@ public class MyWifiActivityTest extends AndroidTestCase {
     	 System.out.print("test:" + text1);
     	 Log.i(TAG, String.valueOf(text1));
     
+	}
+	
+	public void testMySocket(){
+		new Thread(new MySocket()).start();
 	}
 	
 	

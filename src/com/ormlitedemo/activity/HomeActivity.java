@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.ormlitedemo.TemperData;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.db.DatabaseHelper;
 import com.ormlitedemo.wifi.MyWifiActivity;
@@ -200,7 +201,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				stuTemper.setText(MyWifiActivity.strTemp);
+				stuTemper.setText(TemperData.strTemp);
 			}
 		});
 	}

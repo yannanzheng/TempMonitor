@@ -3,6 +3,7 @@ package com.ormlitedemo.bean;
 import java.io.Serializable;  
 
 import com.j256.ormlite.field.DatabaseField; 
+import com.ormlitedemo.TemperData;
 import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.wifi.MyWifiActivity;
 
@@ -55,7 +56,7 @@ public class Student implements Serializable{
         return score;  
     }  
     public void setScore() {  
-        this.score = MyWifiActivity.strTemp.toString();  
+        this.score = TemperData.strTemp.toString();  
     }  
    /* public String getScore() {  
         return MyWifiActivity.strTemp.toString(); 

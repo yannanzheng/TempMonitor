@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 
 
+import com.ormlitedemo.TemperData;
 import com.ormlitedemo.bean.Student;  
 import com.ormlitedemo.db.DatabaseHelper;  
 import com.ormlitedemo.wifi.MyWifiActivity;
@@ -42,7 +43,7 @@ import com.j256.ormlite.dao.Dao;
 public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 	   
     private Context mContext;  
-    private ListView lvStudents;  
+    private ListView stuListView;  
     private Dao<Student,String> stuDao;  
     private List<Student> students;  
     private StudentsAdapter adapter;  
@@ -68,18 +69,18 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
  		dataTimerTask = new TimerTask() {
  			@Override
  			public void run() {
- 				temp = MyWifiActivity.strTemp;	
+ 				temp = TemperData.strTemp;	
  			}
  		};
  		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
           
-        lvStudents = (ListView)findViewById(R.id.stulist);  
-        registerForContextMenu(lvStudents);  //注册上下文菜单    
+        stuListView = (ListView)findViewById(R.id.stu_lv);  
+        registerForContextMenu(stuListView);  //注册上下文菜单    
         
         queryListViewItem();
         
         adapter = new StudentsAdapter(students);  
-     	lvStudents.setAdapter(adapter); 
+     	stuListView.setAdapter(adapter); 
      	
      	adapter.notifyDataSetChanged();
      
@@ -90,7 +91,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     @Override  
     public void onCreateContextMenu(ContextMenu menu, View v,  
             ContextMenuInfo menuInfo) {  
-        if(v == lvStudents)  
+        if(v == stuListView)  
             position = ((AdapterContextMenuInfo)menuInfo).position;  
           
         menu.add(0,MENU_VIEW, 0, "查看");  
@@ -169,7 +170,7 @@ public class StudentListActivity extends OrmLiteBaseActivity<DatabaseHelper> {
               
             @Override  
             public void onClick(DialogInterface dialog, int which) {  
-                Student mDelStudent = (Student)lvStudents.getAdapter().getItem(pos);  
+                Student mDelStudent = (Student)stuListView.getAdapter().getItem(pos);  
                 try {  
                     stuDao.delete(mDelStudent); //删除记录  
                     queryListViewItem();  
