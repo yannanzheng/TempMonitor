@@ -12,6 +12,17 @@ import com.ormlitedemo.utils.StringUtils;
 public class MySocket implements Runnable {
 
 	private static final String TAG = "MySocket";
+	private TemperatureChangeListener temperListener;
+	private String temperature="";
+
+	public MySocket(TemperatureChangeListener temperListener) {
+		this.temperListener = temperListener;
+	}
+
+
+	public MySocket() {
+		super();
+	}
 
 
 	@Override
@@ -25,17 +36,31 @@ public class MySocket implements Runnable {
 			byte[] buf = new byte[1024];
 
 			DataInputStream input = new DataInputStream(in);
-			
+			//Log.i(TAG, "接收到的数据长度"+buf.length);
 			while (true) {
+				//Log.i(TAG, "MySocket在运行....****");
 				int length = input.read(buf);
+				//Log.i(TAG, "接收到的数据长度"+length);
 				for (int i = 0; i < length; i++) {
 					if (buf[i] == -1) {
 						byte[] byteTemp = new byte[2];
 						
+						
 						byteTemp[0] = buf[i + 1];
 						byteTemp[1] = buf[i + 2];
-						TemperData.strTemp = new StringBuffer(
-								StringUtils.bytesToHexString(byteTemp));
+						
+//						TemperData.strTemp = new String(
+//								StringUtils.bytesToHexString(byteTemp));
+						
+						temperature=StringUtils.bytesToHexString(byteTemp);
+						if (temperListener!=null) {
+							//temperListener为空
+							temperListener.changeTemperature(temperature);
+						}
+						//调用方法将数据传递到HomeActivity中
+						
+						
+						Log.i(TAG, "当前温度"+temperature);
 						byte[] byteAddr = new byte[2];
 						byteAddr[0] = buf[i + 9];
 						byteAddr[1] = buf[i + 10];
@@ -49,9 +74,13 @@ public class MySocket implements Runnable {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("错误" + e);
 		}
 	}
+	
+	public interface TemperatureChangeListener{
+    	public void changeTemperature(String tem);
+    }
+
 
 
 }

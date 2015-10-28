@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -31,18 +32,21 @@ import com.ormlitedemo.TemperData;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.wifi.MySocket;
+import com.ormlitedemo.wifi.MySocket.TemperatureChangeListener;
 
-public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
+public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements TemperatureChangeListener{
 	   
     private Context mContext;  
     private ListView stuListView;  
     private StudentDao stuDao;
+    private static final String TAG = "HomeActivity";
     
     private List<Student> allStudentsList=null;  
     private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
     private Student mStudent; 
-    StringBuffer temp;
+    String temp;
       
     private final int MENU_VIEW = Menu.FIRST;  
     private final int MENU_EDIT = Menu.FIRST+1;  
@@ -53,13 +57,26 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     private Timer dataTimer;
 	private TimerTask dataTimerTask = null;
 	private Button add_student_bt;
+	
       
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         setContentView(R.layout.activity_home);  
-        mContext = getApplicationContext();  
+        mContext = getApplicationContext(); 
         
+        //开启线程接收数据
+        new Thread(new MySocket(HomeActivity.this)).start();
+        
+        try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        //updateTemper();
+		
         initTimer();
         initView();  
         //TODO registerForContextMenu(stuListView);  //注册上下文菜单    
@@ -67,15 +84,19 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(mContext, "添加學生", 0).show();
+				Toast.makeText(mContext, "添加学生", 0).show();
 				
 				
 				
 			}
 		});
+        
         adapter = new StudentsAdapter(adapterStudents); 
         
+        
+        
      	stuListView.setAdapter(adapter); 
+     	adapter.notifyDataSetChanged();
      	stuListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -86,9 +107,38 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
 			}
 		});
      	
-     	adapter.notifyDataSetChanged();
+     	
      
     }
+
+
+
+    /**
+     * 将数据库中的温度更新为最新的温度
+     */
+	private void updateTemper(String temp) {
+		allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
+		
+        for (int i = 0; i < allStudentsList.size(); i++) {
+			if (temp!=null) {
+				
+				allStudentsList.get(i).setTemper(temp);
+				//Log.i(TAG, "wendu"+stus.get(i).getTemper());
+				StudentDao.getStudentDao(mContext).updateStudent(allStudentsList.get(i));
+				adapterStudents.clear();
+				adapterStudents.addAll(allStudentsList);
+				
+				//stuListView.setAdapter(adapter);
+				
+				
+			}else {
+				Log.i(TAG, "strTemp为空");
+				allStudentsList.get(i).setTemper("36.5摄氏度");
+				
+				StudentDao.getStudentDao(mContext).updateStudent(allStudentsList.get(i));
+			}
+		}
+	}
 
 
 
@@ -109,7 +159,6 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
  			@Override
  			public void run() {
  				temp = TemperData.strTemp;
- 				//TODO queryListViewItem();
  				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
  				adapterStudents.clear();
  				adapterStudents.addAll(allStudentsList);
@@ -152,16 +201,6 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         return super.onContextItemSelected(item);  
     }  
       
-//    /**  
-//     * 查询记录项  
-//     */  
-//    private void queryListViewItem(){  
-//         
-//            stuDao = StudentDao.getStudentDao(getApplicationContext());  
-//            //查询所有的记录项  
-//            students = stuDao.getAllStudent();  
-//         
-//    }  
       
     /**  
      * 查看记录项  
@@ -233,7 +272,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
   
         @Override  
         public int getCount() {  
-            return listStu.size();  //空指针异常
+            return listStu.size();  
         }  
   
         @Override  
@@ -278,7 +317,26 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         TextView student_number_tv;  
         TextView student_name_tv;  
         TextView student_temper_tv;  
-    }  
+    }
+
+	@Override
+	public void changeTemperature(String temper) {
+		//温度改变了
+		Log.i(TAG, "温度改变了。。。"+temper);//测试回调成功
+		//1，更新数据库中的温度为刚刚查到的温度
+		
+		updateTemper(temper);
+		
+		
+		//2，查询数据
+		
+		
+		
+		
+	}
+    
+    
+    
 
 
 }

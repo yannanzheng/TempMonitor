@@ -37,9 +37,7 @@ public class MyWifiActivity extends Activity {
 		setContentView(R.layout.activity_mywifi);
 		new Thread(new MySocket()).start();
 
-		dataview = (EditText) findViewById(R.id.dataview);
-		wifi_start_bt = (Button) findViewById(R.id.wifi_start_bt);
-		dataview.setText(TemperData.text);
+		initView();
 		dataTimer = new Timer("Light");// 设置定时器，对数据进行显示
 		dataTimerTask = new TimerTask() {
 			@Override
@@ -50,6 +48,12 @@ public class MyWifiActivity extends Activity {
 
 		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
 
+	}
+
+	private void initView() {
+		dataview = (EditText) findViewById(R.id.dataview);
+		wifi_start_bt = (Button) findViewById(R.id.wifi_start_bt);
+		dataview.setText(TemperData.text);
 	}
 
 	// 接收到的数据更新显示，测试
