@@ -10,7 +10,7 @@ import android.util.Log;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 
-public class StudentDaoTest {
+public class StudentDaoTest extends AndroidTestCase{
 	
 	private static final String TAG="STUDENTDAOTEST";
 	public void testSava() throws Exception{
@@ -18,11 +18,7 @@ public class StudentDaoTest {
 		
 	}
 	
-	//**************
-	private void assertEquals(int i, int j) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	public void testGetAllStudent() throws Exception{
 		List<Student> stus=new ArrayList<Student>();
 		
@@ -120,16 +116,8 @@ public class StudentDaoTest {
 		}
 	}
 	
-	//********************
-	private Context getContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	//********************
-	private void assertEquals(boolean right, boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 
 }

@@ -14,11 +14,16 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
@@ -47,6 +52,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
     
     private Timer dataTimer;
 	private TimerTask dataTimerTask = null;
+	private Button add_student_bt;
       
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
@@ -55,17 +61,41 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> {
         mContext = getApplicationContext();  
         
         initTimer();
-          
-        stuListView = (ListView)findViewById(R.id.stu_lv);  
+        initView();  
         //TODO registerForContextMenu(stuListView);  //注册上下文菜单    
-        
+        add_student_bt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(mContext, "添加學生", 0).show();
+				
+				
+				
+			}
+		});
         adapter = new StudentsAdapter(adapterStudents); 
         
      	stuListView.setAdapter(adapter); 
+     	stuListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Toast.makeText(mContext, "点击项目是"+position, 0).show();
+				
+			}
+		});
      	
      	adapter.notifyDataSetChanged();
      
     }
+
+
+
+	private void initView() {
+		add_student_bt = (Button) findViewById(R.id.add_student_bt);
+        stuListView = (ListView)findViewById(R.id.stu_lv);
+	}
 
 
 
