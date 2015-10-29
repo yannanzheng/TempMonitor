@@ -263,7 +263,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     
     class StudentsAdapter extends BaseAdapter{  
           
-        private List<Student> listStu;  
+        private List<Student> listStu;
           
         public StudentsAdapter(List<Student> students){  
             super();  
@@ -300,7 +300,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
             }  
               
             Student objStu = listStu.get(position);  
-            holder.student_number_tv.setText(objStu.getDeviceID());  
+            holder.student_number_tv.setText(objStu.getStuNo());  
             holder.student_name_tv.setText(objStu.getName());  
             holder.student_temper_tv.setText(objStu.getTemper());
             //holder.student_temper_tv.setText("36.5…„ œ∂»");

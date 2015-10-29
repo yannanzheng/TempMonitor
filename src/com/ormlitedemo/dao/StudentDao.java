@@ -85,14 +85,14 @@ public class StudentDao {
 			
 			if (!(stu==null)) {
 				Log.i(TAG, "addStudent stu不为空");
-				String stuNO=stu.getDeviceID();
+				String stuNO=stu.getStuNo();
 				if (!(stuNO==null)) {
 					Log.i(TAG, "addStudent stuNO不为空");
 					if (!isExistStudent(stuNO)) {
 						Log.i(TAG, "addStudent 该学生不存在");
 						
 						//stucentDaoOpe.create(stu);
-						daoOpe.createOrUpdate(stu);
+						daoOpe.create(stu);
 						Log.i(TAG, "addStudent 该学生存在"+stu.toString());
 						
 						return true;

@@ -51,6 +51,7 @@ public class StudentDaoTest extends AndroidTestCase{
 		dao.addStudent(stu5);
 		dao.addStudent(stu6);
 		
+		
 		stus.addAll(dao.getAllStudent());
 		
 		
@@ -85,11 +86,12 @@ public class StudentDaoTest extends AndroidTestCase{
 		Student stu3=new Student();
 		Student stu4=new Student();
 		stu1.setDeviceID(1+"");
+		stu1.setStuNo("1234");
 		stu1.setName("zhangsan");
-		stu2.setDeviceID(2+"");
+		stu2.setStuNo(2+"");
 		stu2.setName("Lisi");
-		stu3.setDeviceID(3+"");
-		stu4.setDeviceID(4+"");
+		stu3.setStuNo(3+"");
+		stu4.setStuNo(4+"");
 		Student stu=new Student();
 		StudentDao dao=StudentDao.getStudentDao(getContext());
 		dao.addStudent(stu1);
@@ -98,7 +100,7 @@ public class StudentDaoTest extends AndroidTestCase{
 		dao.addStudent(stu4);
 		
 		
-		stu.setDeviceID("8");
+		stu.setStuNo("8");
 		boolean right=dao.addStudent(stu);
 		assertEquals(right, true);
 		

@@ -8,21 +8,58 @@ import com.ormlitedemo.activity.StudentDetailActivity;
 import com.ormlitedemo.wifi.MyWifiActivity;
 
 public class Student implements Serializable{
-	private static final long serialVersionUID = -5683263669918171030L;  
     
-    @DatabaseField(id=true)  
-    private String deviceID;  
+	private static final long serialVersionUID = -8551683803719520351L;
+
+	 /**
+     * 学号
+     */
+    @DatabaseField(id=true)
+    private String stuNo;  
+	
+	/**
+	 * 佩戴设备的id,这个可以重用
+	 */
     @DatabaseField  
+    private String deviceID; 
+    
+   
+    
+    /**
+     * 姓名
+     */
+    @DatabaseField
     private String name;  
+    
+    /**
+     * 家庭住址
+     */
     @DatabaseField  
-    private int age;  
+    private int age; 
+    
+    /**
+     * 性别
+     */
     @DatabaseField  
     private String sex;  
+    
+    /**
+     * 体温
+     */
     @DatabaseField  
-   // private double score;  
     private String temper;
+    
+    /**
+     * 家庭地址
+     */
     @DatabaseField  
     private String address;  
+    
+    /**
+     * 联系方式
+     */
+    @DatabaseField
+    private String phoneNum;  
       
     public String getDeviceID() {
 		return deviceID;
@@ -69,14 +106,27 @@ public class Student implements Serializable{
     }  
     public void setAddress(String address) {  
         this.address = address;  
-    }  
-    
-    @Override
+    }
+	public String getStuNo() {
+		return stuNo;
+	}
+	public void setStuNo(String stuNo) {
+		this.stuNo = stuNo;
+	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+	@Override
 	public String toString() {
-		return "Student [stuNO=" + getDeviceID() + ", name=" + getName() + ", age=" + getAge()
-				+ ", sex=" + getSex() + ", score=" + getTemper() + ", address=" + getAddress()
-				+ "]";
+		return "Student [deviceID=" + deviceID + ", stuNo=" + stuNo + ", name="
+				+ name + ", age=" + age + ", sex=" + sex + ", temper=" + temper
+				+ ", address=" + address + ", phoneNum=" + phoneNum + "]";
 	}  
+    
+    
 
 
 }
