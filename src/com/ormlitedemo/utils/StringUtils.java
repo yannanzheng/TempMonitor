@@ -1,6 +1,12 @@
 package com.ormlitedemo.utils;
 
 public class StringUtils {
+	
+	/**
+	 * 将温度数据转换成十六进制数据字符串形式
+	 * @param src
+	 * @return
+	 */
 	public static String bytesToHexString(byte[] src) {
 
 		StringBuilder stringBuilder = new StringBuilder("");

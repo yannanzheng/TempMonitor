@@ -2,9 +2,7 @@ package com.ormlitedemo.activity;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,6 +27,7 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.wifi.MySocket;
 import com.ormlitedemo.wifi.MySocket.TemperatureChangeListener;
 
 public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements TemperatureChangeListener{
@@ -36,6 +35,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     private Context mContext;  
     private ListView stuListView;  
     private static final String TAG = "HomeActivity";
+    private static final int TEMPERATURE_CHANGED=1;
     
     
     private List<Student> allStudentsList=null;  
@@ -48,7 +48,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case 1:
+			case TEMPERATURE_CHANGED:
 				adapter.notifyDataSetChanged();
 				break;
 
@@ -67,10 +67,10 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         mContext = getApplicationContext(); 
         
         //开启线程接收数据
-       //TODO new Thread(new MySocket(HomeActivity.this)).start();
+        new Thread(new MySocket(HomeActivity.this)).start();
         
         //模拟数据接收 
-        dataEngineMonitor(2000);
+ //       dataEngineMonitor(2000);
         
 //        try {
 //			Thread.sleep(2000);
@@ -116,26 +116,13 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
     }
 
 
-//*************************************模拟数据***************************************************
+//*************************************模拟数据上边界***************************************************
     private int j=0;
-    private Map<String,String> fakeStuMsg=new HashMap<String, String>();
    /**
     * 模拟数据发送
     * @param delay 数据发送的间隔时间
     */
 	private void dataEngineMonitor(long delay) {
-		
-		
-//		fakeStuMsg.put("device0001", "36.5");
-//		fakeStuMsg.put("device0002", "36.6");
-//		fakeStuMsg.put("device0003", "36.7");
-//		fakeStuMsg.put("device0004", "36.2");
-//		fakeStuMsg.put("device0005", "36.3");
-//		fakeStuMsg.put("device0006", "36.4");
-//		fakeStuMsg.put("device0007", "36.6");
-//		fakeStuMsg.put("device0008", "36.7");
-//		fakeStuMsg.put("device0009", "36.8");
-//		fakeStuMsg.put("device00010", "36.2");
 		
 		Timer timer=new Timer();
 		
@@ -163,7 +150,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	}
 	
 	
-	//*************************************模拟数据***************************************************
+	//*************************************模拟数据下边界***************************************************
 
 
     /**
@@ -176,13 +163,9 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 			if (temp!=null) {
 				
 				allStudentsList.get(i).setTemper(temp);
-				//Log.i(TAG, "wendu"+stus.get(i).getTemper());
 				StudentDao.getStudentDao(mContext).updateStudent(allStudentsList.get(i));
 				adapterStudents.clear();
 				adapterStudents.addAll(allStudentsList);
-				
-				//stuListView.setAdapter(adapter);
-				
 				
 			}else {
 				Log.i(TAG, "strTemp为空");
@@ -200,6 +183,8 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         stuListView = (ListView)findViewById(R.id.stu_lv);
 	}
     
+	
+	
     class StudentsAdapter extends BaseAdapter{  
           
   
@@ -236,8 +221,6 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
             holder.student_number_tv.setText(objStu.getStuNo());  
             holder.student_name_tv.setText(objStu.getName());  
             holder.student_temper_tv.setText(objStu.getTemper());
-            //holder.student_temper_tv.setText("36.5摄氏度");
-       
             //做颜色标记
             if ("107743" == objStu.getDeviceID())
                  holder.student_temper_tv.setTextColor(android.graphics.Color.RED);
@@ -258,10 +241,15 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		Log.i(TAG, "温度改变了。。。"+temper);//测试回调成功
 		//1，更新数据库中的温度为刚刚查到的温度
 		
-		updateTemper(temper);
-		
-		
-		//2，查询数据
+		Message msg=Message.obtain();
+		msg.what=TEMPERATURE_CHANGED;
+		//updateTemper(temper);
+		for (int i = 0; i < adapterStudents.size(); i++) {
+			
+			adapterStudents.get(i).setTemper(temper+"摄氏度");
+			
+		}
+		mHandler.sendMessage(msg);
 		
 		
 		

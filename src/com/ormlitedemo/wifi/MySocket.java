@@ -43,16 +43,16 @@ public class MySocket implements Runnable {
 				//Log.i(TAG, "接收到的数据长度"+length);
 				for (int i = 0; i < length; i++) {
 					if (buf[i] == -1) {
-						byte[] byteTemp = new byte[2];
+						
+						byte[] byteTemp = new byte[2];//体温字节码数据
 						
 						
 						byteTemp[0] = buf[i + 1];
 						byteTemp[1] = buf[i + 2];
 						
-//						TemperData.strTemp = new String(
-//								StringUtils.bytesToHexString(byteTemp));
+						temperature=StringUtils.bytesToHexString(byteTemp);//十六进制字符串
 						
-						temperature=StringUtils.bytesToHexString(byteTemp);
+						
 						if (temperListener!=null) {
 							//temperListener为空
 							temperListener.changeTemperature(temperature);
