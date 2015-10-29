@@ -9,18 +9,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -30,7 +26,6 @@ import android.widget.Toast;
 
 import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.ormlitedemo.TemperData;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.db.DatabaseHelper;
@@ -40,24 +35,29 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 	   
     private Context mContext;  
     private ListView stuListView;  
-    private StudentDao stuDao;
     private static final String TAG = "HomeActivity";
+    
     
     private List<Student> allStudentsList=null;  
     private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
-    private Student mStudent; 
     String temp;
-      
-    private final int MENU_VIEW = Menu.FIRST;  
-    private final int MENU_EDIT = Menu.FIRST+1;  
-    private final int MENU_DELETE = Menu.FIRST+2;  
-      
-    private int position; 
-    
-    private Timer dataTimer;
-	private TimerTask dataTimerTask = null;
 	private Button add_student_bt;
+	
+	Handler mHandler=new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 1:
+				adapter.notifyDataSetChanged();
+				break;
+
+			default:
+				break;
+			}
+		
+		}
+	};
 	
       
     @Override  
@@ -70,20 +70,18 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
        //TODO new Thread(new MySocket(HomeActivity.this)).start();
         
         //模拟数据接收 
-        dataEngineMonitor(1000);
+        dataEngineMonitor(2000);
         
-        
-        
-        try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        //updateTemper();
+//        try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//        
+       // updateTemper();
 		
-        initTimer();
+       // initTimer();
         initView();  
         //TODO registerForContextMenu(stuListView);  //注册上下文菜单    
         add_student_bt.setOnClickListener(new OnClickListener() {
@@ -92,17 +90,17 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 			public void onClick(View v) {
 				Toast.makeText(mContext, "添加学生", 0).show();
 				
-				
-				
 			}
 		});
         
-        adapter = new StudentsAdapter(adapterStudents); 
-        
-        
-        
+        adapter = new StudentsAdapter(); 
      	stuListView.setAdapter(adapter); 
-     	adapter.notifyDataSetChanged();
+     	//adapter.notifyDataSetChanged();
+     	allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
+     	adapterStudents.clear();
+     	adapterStudents.addAll(allStudentsList);
+     	
+     	
      	stuListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -119,7 +117,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 
 
 //*************************************模拟数据***************************************************
-    private int i=0;
+    private int j=0;
     private Map<String,String> fakeStuMsg=new HashMap<String, String>();
    /**
     * 模拟数据发送
@@ -143,14 +141,23 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		
 		
         timer.scheduleAtFixedRate(new TimerTask() {
-			String[] fakeStuTem={"36.5","36.6","36.7","36.6","36.7","36.8","36.6","36.4","36.3","36.5"};
 			@Override
 			public void run() {
 				
-				i++;
-				fakeStuMsg.put("device0001", i+"");
-				i++;
-				Log.i(TAG, "定时器运行了"+i+"次");
+				j++;
+				Log.i(TAG, "定时器运行了"+j+"次");
+				
+				for (int i = 0; i < adapterStudents.size(); i++) {
+					adapterStudents.get(i).setTemper(j+"摄氏度");
+					
+					//adapter.notifyDataSetChanged();
+					Message msg=Message.obtain();
+					msg.obj=""+j;
+					msg.what=1;
+					mHandler.sendEmptyMessage(1);
+					
+				}
+				
 			}
 		}, 0, delay);
 	}
@@ -192,138 +199,18 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 		add_student_bt = (Button) findViewById(R.id.add_student_bt);
         stuListView = (ListView)findViewById(R.id.stu_lv);
 	}
-
-
-
-    /**
-     * 初始化定时器，每隔5s到数据库查询一次数据，并更新适配器所绑定的集合
-     */
-	private void initTimer() {
-		//定时器
-        dataTimer = new Timer("Light");
- 		dataTimerTask = new TimerTask() {
- 			@Override
- 			public void run() {
- 				temp = TemperData.strTemp;
- 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
- 				adapterStudents.clear();
- 				adapterStudents.addAll(allStudentsList);
- 				
- 			}
- 		};
- 		
- 		dataTimer.scheduleAtFixedRate(dataTimerTask, 0, 500);
-	}  
-    
-   
-  
-    @Override  
-    public void onCreateContextMenu(ContextMenu menu, View v,  
-            ContextMenuInfo menuInfo) {  
-        if(v == stuListView)  
-            position = ((AdapterContextMenuInfo)menuInfo).position;  
-          
-        menu.add(0,MENU_VIEW, 0, "查看");  
-        menu.add(0,MENU_EDIT, 0, "编辑");  
-        menu.add(0,MENU_DELETE,0,"删除");  
-        super.onCreateContextMenu(menu, v, menuInfo);  
-    }  
-      
-    @Override  
-    public boolean onContextItemSelected(MenuItem item) {  
-        switch (item.getItemId()) {  
-        case MENU_VIEW:  
-            viewListViewItem(position);  
-            break; 
-        case MENU_EDIT:  
-            editListViewItem(position);  
-            break;  
-        case MENU_DELETE:  
-            //TODO deleteListViewItem(position);  
-            break;  
-        default:  
-            break;  
-        }  
-        return super.onContextItemSelected(item);  
-    }  
-      
-      
-    /**  
-     * 查看记录项  
-     * @param position  
-     */  
-    private void viewListViewItem(int position){  
-        mStudent = allStudentsList.get(position);  
-        Intent intent = new Intent();  
-        intent.setClass(mContext, StudentDetailActivity.class);  
-        intent.putExtra("action", "viewone");  
-        intent.putExtra("entity", mStudent);  
-        startActivity(intent);  
-    }  
-      
-    /**  
-     * 编辑记录项  
-     */  
-    private void editListViewItem(int position){  
-        mStudent = allStudentsList.get(position);  
-        Intent intent = new Intent();  
-        intent.setClass(mContext, StudentDetailActivity.class);  
-        intent.putExtra("action", "edit");  
-        intent.putExtra("entity", mStudent);  
-        startActivity(intent);  
-    }  
-      
-//    /**  
-//     * 删除记录项  
-//     * @param position  
-//     */  
-//    private void deleteListViewItem(int position){  
-//        final int pos = position;  
-//        AlertDialog.Builder builder2 = new AlertDialog.Builder(StudentListActivity.this);  
-//        builder2.setIcon(android.R.drawable.ic_dialog_alert)  
-//                .setTitle("警告")  
-//                .setMessage("确定要删除该记录");  
-//        builder2.setPositiveButton("确定", new DialogInterface.OnClickListener() {  
-//              
-//            @Override  
-//            public void onClick(DialogInterface dialog, int which) {  
-//                Student mDelStudent = (Student)stuListView.getAdapter().getItem(pos);  
-//                 
-//                    stuDao.deleteStudent(mDelStudent) ;//删除记录  
-//                    queryListViewItem();  
-//                 
-//                  
-//            }  
-//        });  
-//        builder2.setNegativeButton("取消", new DialogInterface.OnClickListener() {  
-//              
-//            @Override  
-//            public void onClick(DialogInterface dialog, int which) {  
-//                dialog.dismiss();  
-//            }  
-//        });  
-//        builder2.show();  
-//    }  
-//      
-    
     
     class StudentsAdapter extends BaseAdapter{  
           
-        private List<Student> listStu;
-          
-        public StudentsAdapter(List<Student> students){  
-            super();  
-            this.listStu = students;  
-        }  
   
         @Override  
         public int getCount() {  
-            return listStu.size();  
+            return adapterStudents.size();  
         }  
   
         @Override  
         public Student getItem(int position) {  
-            return listStu.get(position);  
+            return adapterStudents.get(position);  
         }  
   
         @Override  
@@ -345,7 +232,7 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
                 holder = (ViewHolder)convertView.getTag();  
             }  
               
-            Student objStu = listStu.get(position);  
+            Student objStu = adapterStudents.get(position);  
             holder.student_number_tv.setText(objStu.getStuNo());  
             holder.student_name_tv.setText(objStu.getName());  
             holder.student_temper_tv.setText(objStu.getTemper());
