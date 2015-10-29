@@ -2,7 +2,9 @@ package com.ormlitedemo.activity;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +34,6 @@ import com.ormlitedemo.TemperData;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.db.DatabaseHelper;
-import com.ormlitedemo.wifi.MySocket;
 import com.ormlitedemo.wifi.MySocket.TemperatureChangeListener;
 
 public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements TemperatureChangeListener{
@@ -66,7 +67,12 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         mContext = getApplicationContext(); 
         
         //开启线程接收数据
-        new Thread(new MySocket(HomeActivity.this)).start();
+       //TODO new Thread(new MySocket(HomeActivity.this)).start();
+        
+        //模拟数据接收 
+        dataEngineMonitor(1000);
+        
+        
         
         try {
 			Thread.sleep(2000);
@@ -111,6 +117,46 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
      
     }
 
+
+//*************************************模拟数据***************************************************
+    private int i=0;
+    private Map<String,String> fakeStuMsg=new HashMap<String, String>();
+   /**
+    * 模拟数据发送
+    * @param delay 数据发送的间隔时间
+    */
+	private void dataEngineMonitor(long delay) {
+		
+		
+//		fakeStuMsg.put("device0001", "36.5");
+//		fakeStuMsg.put("device0002", "36.6");
+//		fakeStuMsg.put("device0003", "36.7");
+//		fakeStuMsg.put("device0004", "36.2");
+//		fakeStuMsg.put("device0005", "36.3");
+//		fakeStuMsg.put("device0006", "36.4");
+//		fakeStuMsg.put("device0007", "36.6");
+//		fakeStuMsg.put("device0008", "36.7");
+//		fakeStuMsg.put("device0009", "36.8");
+//		fakeStuMsg.put("device00010", "36.2");
+		
+		Timer timer=new Timer();
+		
+		
+        timer.scheduleAtFixedRate(new TimerTask() {
+			String[] fakeStuTem={"36.5","36.6","36.7","36.6","36.7","36.8","36.6","36.4","36.3","36.5"};
+			@Override
+			public void run() {
+				
+				i++;
+				fakeStuMsg.put("device0001", i+"");
+				i++;
+				Log.i(TAG, "定时器运行了"+i+"次");
+			}
+		}, 0, delay);
+	}
+	
+	
+	//*************************************模拟数据***************************************************
 
 
     /**
