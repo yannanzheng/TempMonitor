@@ -72,30 +72,25 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
         //模拟数据接收 
  //       dataEngineMonitor(2000);
         
-//        try {
-//			Thread.sleep(2000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//        
        // updateTemper();
 		
-       // initTimer();
         initView();  
-        //TODO registerForContextMenu(stuListView);  //注册上下文菜单    
+        
         add_student_bt.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				//TODO 添加学生
 				Toast.makeText(mContext, "添加学生", 0).show();
+				
+				
+				
 				
 			}
 		});
         
         adapter = new StudentsAdapter(); 
      	stuListView.setAdapter(adapter); 
-     	//adapter.notifyDataSetChanged();
      	allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
      	adapterStudents.clear();
      	adapterStudents.addAll(allStudentsList);
@@ -250,8 +245,6 @@ public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements
 			
 		}
 		mHandler.sendMessage(msg);
-		
-		
 		
 		
 	}
