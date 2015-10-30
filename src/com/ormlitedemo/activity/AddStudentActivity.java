@@ -13,8 +13,6 @@ import com.ormlitedemo.wifi.TemperatureObserver;
 
 public class AddStudentActivity extends Activity implements TemperatureObserver{
 
-
-
 	private static final String TAG="ADDSTUDENTACTIVITY";
 	private TextView add_student_cancel_tv;
 	private TextView add_student_title_tv;
@@ -42,6 +40,8 @@ public class AddStudentActivity extends Activity implements TemperatureObserver{
 	        //开启线程接收数据
 	        temperatureData.registerObserver(this);
 	        //new Thread(temperatureData).start();
+	        Log.i(TAG, "oncreate()");
+	        
 	        
 
 	}

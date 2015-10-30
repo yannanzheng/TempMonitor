@@ -66,13 +66,6 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 						
 						temperature=StringUtils.bytesToHexString(byteTemp);//十六进制字符串
 						
-//						
-//						if (temperListener!=null) {
-//							//temperListener为空
-//							temperListener.updateTemperature(temperature);
-//							
-//							
-//						}
 						
 						//通知
 						notifyObservers(temperature);

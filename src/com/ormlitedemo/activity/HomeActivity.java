@@ -59,23 +59,18 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 		}
 	};
 	
-      
+
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);  
         mContext = getApplicationContext(); 
-        TemperatureData temperatureData=TemperatureData.getTemperatureData();
-        //开启线程接收数据
-        temperatureData.registerObserver(this);
-        new Thread(temperatureData).start();
+        
+        
         
         //模拟数据接收 
  //       dataEngineMonitor(2000);
-        
-       // updateTemper();
-		
         initView();  
         
         add_student_tv.setOnClickListener(new OnClickListener() {
@@ -89,6 +84,10 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 				
 			}
 		});
+        
+        
+        
+        
         
         adapter = new StudentsAdapter(); 
      	stuListView.setAdapter(adapter); 
@@ -112,8 +111,19 @@ public class HomeActivity extends Activity implements TemperatureObserver{
     }
 
 
-//*************************************模拟数据上边界***************************************************
+@Override
+	protected void onResume() {
+		super.onResume();
+		temperatureData = TemperatureData.getTemperatureData();
+        temperatureData.registerObserver(this);
+        new Thread(temperatureData).start();
+		
+	}
+
+
+	//*************************************模拟数据上边界***************************************************
     private int j=0;
+private TemperatureData temperatureData;
    /**
     * 模拟数据发送
     * @param delay 数据发送的间隔时间
