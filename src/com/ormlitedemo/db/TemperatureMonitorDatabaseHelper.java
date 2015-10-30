@@ -53,12 +53,6 @@ public class TemperatureMonitorDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	        }  
 	    }  
 	      
-//	    public Dao<Student,String> getStudentDao() throws SQLException{  
-//	        if(stuDao == null){  
-//	            stuDao = getDao(Student.class);  
-//	        }  
-//	        return stuDao;  
-//	    }  
 	  
 	    
 	    public static  TemperatureMonitorDatabaseHelper instance;
@@ -83,7 +77,6 @@ public class TemperatureMonitorDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	    
 	    @Override
 	    public void close() {
-	    	// TODO Auto-generated method stub
 	    	super.close();
 	    }
 

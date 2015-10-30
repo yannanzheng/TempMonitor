@@ -3,7 +3,7 @@ package com.ormlitedemo.test;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.ormlitedemo.wifi.MySocket;
+import com.ormlitedemo.wifi.TemperatureData;
 
 public class MyWifiActivityTest extends AndroidTestCase {
 	private static final String TAG="MyWifiActivityTest";
@@ -32,7 +32,7 @@ public class MyWifiActivityTest extends AndroidTestCase {
 	}
 	
 	public void testMySocket(){
-		new Thread(new MySocket()).start();
+		new Thread(TemperatureData.getTemperatureData()).start();
 	}
 	
 	

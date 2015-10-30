@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,23 +16,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ormlitedemo.R;
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
-import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
-import com.ormlitedemo.wifi.MySocket;
-import com.ormlitedemo.wifi.MySocket.TemperatureChangeListener;
+import com.ormlitedemo.wifi.TemperatureData;
+import com.ormlitedemo.wifi.TemperatureObserver;
 
-public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabaseHelper> implements TemperatureChangeListener{
+public class HomeActivity extends Activity implements TemperatureObserver{
 	   
     private Context mContext;  
     private ListView stuListView;  
@@ -42,7 +42,7 @@ public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabase
     private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
     String temp;
-	private Button add_student_bt;
+	private TextView add_student_tv;
 	
 	Handler mHandler=new Handler(){
 		@Override
@@ -63,11 +63,13 @@ public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabase
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);  
         mContext = getApplicationContext(); 
-        
+        TemperatureData temperatureData=TemperatureData.getTemperatureData();
         //开启线程接收数据
-        new Thread(new MySocket(HomeActivity.this)).start();
+        temperatureData.registerObserver(this);
+        new Thread(temperatureData).start();
         
         //模拟数据接收 
  //       dataEngineMonitor(2000);
@@ -76,15 +78,14 @@ public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabase
 		
         initView();  
         
-        add_student_bt.setOnClickListener(new OnClickListener() {
+        add_student_tv.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				//TODO 添加学生
-				Toast.makeText(mContext, "添加学生", 0).show();
+				//Toast.makeText(mContext, "添加学生", 0).show();
 				
-				
-				
+				startActivity(new Intent(getApplicationContext(),AddStudentActivity.class));
 				
 			}
 		});
@@ -174,7 +175,7 @@ public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabase
 
 
 	private void initView() {
-		add_student_bt = (Button) findViewById(R.id.add_student_bt);
+		add_student_tv = (TextView) findViewById(R.id.add_student_bt);
         stuListView = (ListView)findViewById(R.id.stu_lv);
 	}
     
@@ -231,11 +232,9 @@ public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabase
     }
 
 	@Override
-	public void changeTemperature(String temper) {
+	public void updateTemperature(String temper) {
 		//温度改变了
 		Log.i(TAG, "温度改变了。。。"+temper);//测试回调成功
-		//1，更新数据库中的温度为刚刚查到的温度
-		
 		Message msg=Message.obtain();
 		msg.what=TEMPERATURE_CHANGED;
 		//updateTemper(temper);

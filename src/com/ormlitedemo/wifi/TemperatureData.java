@@ -3,25 +3,40 @@ package com.ormlitedemo.wifi;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import android.util.Log;
 
 import com.ormlitedemo.TemperData;
 import com.ormlitedemo.utils.StringUtils;
 
-public class MySocket implements Runnable {
+/**
+ * 采用观察者模式对体温变化进行监控
+ * @author jfy
+ *
+ */
+public class TemperatureData implements Runnable,TemperatureSubject {
 
+	//TODO 应该监控wifi连接，一旦连接上wifi，通知这边开启，没有的话就提示网络连接之类的
 	private static final String TAG = "MySocket";
-	private TemperatureChangeListener temperListener;
+	//private TemperatureObserver temperListener;
 	private String temperature="";
+	private ArrayList<TemperatureObserver> observers;
+	private static TemperatureData temperatureData=null;
 
-	public MySocket(TemperatureChangeListener temperListener) {
-		this.temperListener = temperListener;
+
+	private TemperatureData() {
+		observers=new ArrayList<TemperatureObserver>();
+		
 	}
-
-
-	public MySocket() {
-		super();
+	
+	public static TemperatureData getTemperatureData(){
+		if(temperatureData==null){
+			return new TemperatureData();
+			
+		}
+		
+		return temperatureData;
 	}
 
 
@@ -36,7 +51,6 @@ public class MySocket implements Runnable {
 			byte[] buf = new byte[1024];
 
 			DataInputStream input = new DataInputStream(in);
-			//Log.i(TAG, "接收到的数据长度"+buf.length);
 			while (true) {
 				//Log.i(TAG, "MySocket在运行....****");
 				int length = input.read(buf);
@@ -52,11 +66,18 @@ public class MySocket implements Runnable {
 						
 						temperature=StringUtils.bytesToHexString(byteTemp);//十六进制字符串
 						
+//						
+//						if (temperListener!=null) {
+//							//temperListener为空
+//							temperListener.updateTemperature(temperature);
+//							
+//							
+//						}
 						
-						if (temperListener!=null) {
-							//temperListener为空
-							temperListener.changeTemperature(temperature);
-						}
+						//通知
+						notifyObservers(temperature);
+						
+						
 						//调用方法将数据传递到HomeActivity中
 						
 						
@@ -76,11 +97,31 @@ public class MySocket implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	public interface TemperatureChangeListener{
-    	public void changeTemperature(String tem);
-    }
 
 
+	@Override
+	public void registerObserver(TemperatureObserver tempObj) {
+		observers.add(tempObj);
+		
+	}
+
+
+	@Override
+	public void removeObserver(TemperatureObserver tempObj) {
+
+		int i=observers.indexOf(tempObj);
+		if (i>=0) {
+			observers.remove(i);
+		}
+	}
+
+
+	@Override
+	public void notifyObservers(String temp) {
+		for (int i = 0; i < observers.size(); i++) {
+			observers.get(i).updateTemperature(temp);
+		}
+		
+	}
 
 }

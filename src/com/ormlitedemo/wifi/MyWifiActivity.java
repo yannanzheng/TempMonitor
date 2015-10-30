@@ -35,7 +35,7 @@ public class MyWifiActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mywifi);
-		new Thread(new MySocket()).start();
+		new Thread(TemperatureData.getTemperatureData()).start();
 
 		initView();
 		dataTimer = new Timer("Light");// 设置定时器，对数据进行显示
@@ -66,5 +66,6 @@ public class MyWifiActivity extends Activity {
 			}
 		});
 	}
+
 
 }

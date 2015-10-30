@@ -2,16 +2,71 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg15"
     android:orientation="vertical"
-    android:padding="5dip" >
-
+     >
+	<RelativeLayout 
+		android:layout_width="match_parent"
+		android:layout_height="50dp" 
+		android:background="#696969"  
+    >
+    
+	    
+	    
     <TextView
+        android:id="@+id/add_student_cancel_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:textSize="22dp"
+        android:text="取消" 
+        android:textColor="#fffafa"
+        />
+    <TextView
+        android:id="@+id/add_student_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="22dp"
+        android:text="添加学生" 
+        android:textColor="#fffafa"
+        />
+    <TextView
+        android:id="@+id/add_student_finished_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:textSize="22sp"
+        android:text="完成" 
+        android:textColor="#fffafa"
+        />
+	</RelativeLayout>
+    
+   
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Students-information" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设备ID：" />
+
+        <EditText
+            
+            android:id="@+id/add_student_device_id_et"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    
+    
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -25,7 +80,7 @@
             android:text="学号: " />
 
         <EditText
-            android:id="@+id/stuno"
+            android:id="@+id/add_student_stuno_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -43,7 +98,7 @@
             android:text="姓名: " />
 
         <EditText
-            android:id="@+id/name"
+            android:id="@+id/add_student_name_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -61,7 +116,7 @@
             android:text="年龄: " />
 
         <EditText
-            android:id="@+id/age"
+            android:id="@+id/add_student_age_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -79,7 +134,7 @@
             android:text="性别: " />
 
         <EditText
-            android:id="@+id/sex"
+            android:id="@+id/add_student_gender_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -96,10 +151,12 @@
             android:layout_height="wrap_content"
             android:text="体温: " />
 
-        <EditText
-            android:id="@+id/temper"
+        <TextView
+            android:id="@+id/add_student_temper_tv"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" 
+            android:text="36.5摄氏度"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -112,10 +169,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="地址: " />
+            android:text="家庭住址: " />
 
         <EditText
-            android:id="@+id/address"
+            android:id="@+id/add_student_address_et"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="联系方式: " />
+
+        <EditText
+            android:id="@+id/add_student_phone_num_et"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

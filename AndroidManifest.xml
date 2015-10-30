@@ -25,7 +25,7 @@
         <uses-library android:name="android.test.runner" />
 
         <activity
-            android:name="com.ormlitedemo.activity.StudentDetailActivity"
+            android:name="com.ormlitedemo.activity.AddStudentActivity"
             android:label="@string/app_name" >
             
         </activity>
