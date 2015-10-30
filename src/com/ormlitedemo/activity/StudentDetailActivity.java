@@ -15,10 +15,10 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.ormlitedemo.TemperData;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
-import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
 import com.ormlitedemo.wifi.MyWifiActivity;
 
-public class StudentDetailActivity extends OrmLiteBaseActivity<DatabaseHelper> {
+public class StudentDetailActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabaseHelper> {
 
 	private EditText stuNO;
 	private EditText stuName;

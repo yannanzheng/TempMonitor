@@ -13,20 +13,20 @@ import com.j256.ormlite.dao.Dao;
 import com.ormlitedemo.activity.StudentDetailActivity;
 import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.bean.Student;
-import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
 /**
  * Êý¾Ý¿â²Ù×÷
  */
 public class StudentDao {
 	
 	private Dao<Student, String> daoOpe;
-	private DatabaseHelper helper;
+	private TemperatureMonitorDatabaseHelper helper;
 	private static final String TAG="STUDENTDAO";
 	private  static StudentDao stuDao=null;
 	
 	private StudentDao(Context contxt) {
 		try {
-			helper=DatabaseHelper.getHelper(contxt);
+			helper=TemperatureMonitorDatabaseHelper.getHelper(contxt);
 			daoOpe=this.getSingleOrmliteDao();
 		} catch (Exception e) {
 			// TODO: handle exception

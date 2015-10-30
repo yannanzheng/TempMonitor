@@ -1,6 +1,6 @@
 package com.ormlitedemo.test;
 
-import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
 
 import android.content.Context;
 import android.test.AndroidTestCase;
@@ -9,7 +9,7 @@ public class DataBaseHelperTest {
 	
 	public void testGetHelper() throws Exception{
 	    Context context=getContext();
-		DatabaseHelper instance=DatabaseHelper.getHelper(context);
+		TemperatureMonitorDatabaseHelper instance=TemperatureMonitorDatabaseHelper.getHelper(context);
 		
 	}
 

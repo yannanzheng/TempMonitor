@@ -26,11 +26,11 @@ import com.example.ormlitedemo.R;
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
-import com.ormlitedemo.db.DatabaseHelper;
+import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
 import com.ormlitedemo.wifi.MySocket;
 import com.ormlitedemo.wifi.MySocket.TemperatureChangeListener;
 
-public class HomeActivity extends OrmLiteBaseActivity<DatabaseHelper> implements TemperatureChangeListener{
+public class HomeActivity extends OrmLiteBaseActivity<TemperatureMonitorDatabaseHelper> implements TemperatureChangeListener{
 	   
     private Context mContext;  
     private ListView stuListView;  

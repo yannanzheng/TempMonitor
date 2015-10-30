@@ -12,13 +12,13 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;  
 import com.j256.ormlite.table.TableUtils; 
 
-public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+public class TemperatureMonitorDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	 private static final String DATABASE_NAME = "ormlite.db";  
 	    private static final int DATABASE_VERSION = 1;  
 	      
 	    //private Dao<Student,String> stuDao = null;
 	      
-	    public DatabaseHelper(Context context){  
+	    public TemperatureMonitorDatabaseHelper(Context context){  
 	        super(context, DATABASE_NAME, null, DATABASE_VERSION);  
 	    }  
 	  
@@ -30,7 +30,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	        try {  
 	            TableUtils.createTable(connectionSource, Student.class);  
 	        } catch (SQLException e) {  
-	            Log.e(DatabaseHelper.class.getName(), "Unable to create datbases", e);  
+	            Log.e(TemperatureMonitorDatabaseHelper.class.getName(), "Unable to create datbases", e);  
 	        }  
 	    }  
 	  
@@ -47,7 +47,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	            TableUtils.dropTable(connectionSource, Student.class, true);  
 	            onCreate(sqliteDatabase, connectionSource);  
 	        } catch (SQLException e) {  
-	            Log.e(DatabaseHelper.class.getName(),   
+	            Log.e(TemperatureMonitorDatabaseHelper.class.getName(),   
 	                    "Unable to upgrade database from version " + oldVer + " to new "  
 	                    + newVer, e);  
 	        }  
@@ -61,18 +61,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 //	    }  
 	  
 	    
-	    public static  DatabaseHelper instance;
+	    public static  TemperatureMonitorDatabaseHelper instance;
 	    /**
 	     * µ¥Àý»ñÈ¡DatabaseHelper
 	     * @param context
 	     * @return
 	     */
-	    public static synchronized DatabaseHelper  getHelper(Context context){
+	    public static synchronized TemperatureMonitorDatabaseHelper  getHelper(Context context){
 	    	context=context.getApplicationContext();
 	    	if (instance==null) {
-				synchronized (DatabaseHelper.class) {
+				synchronized (TemperatureMonitorDatabaseHelper.class) {
 					if (instance==null) {
-						instance=new DatabaseHelper(context);
+						instance=new TemperatureMonitorDatabaseHelper(context);
 					}
 				}
 			}
