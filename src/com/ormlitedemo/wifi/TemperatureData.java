@@ -21,7 +21,7 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 	private static final String TAG = "MySocket";
 	//private TemperatureObserver temperListener;
 	private String temperature="";
-	private ArrayList<TemperatureObserver> observers;
+	public ArrayList<TemperatureObserver> observers;
 	private static TemperatureData temperatureData=null;
 
 
@@ -49,38 +49,27 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 			
 			InputStream in = s.getInputStream();
 			byte[] buf = new byte[1024];
-
-			DataInputStream input = new DataInputStream(in);
+//			DataInputStream input = new DataInputStream(in);
 			while (true) {
 				//Log.i(TAG, "MySocket在运行....****");
-				int length = input.read(buf);
+//				int length = input.read(buf);
 				//Log.i(TAG, "接收到的数据长度"+length);
-				for (int i = 0; i < length; i++) {
-					if (buf[i] == -1) {
-						
-						byte[] byteTemp = new byte[2];//体温字节码数据
-						
-						
-						byteTemp[0] = buf[i + 1];
-						byteTemp[1] = buf[i + 2];
-						
-						temperature=StringUtils.bytesToHexString(byteTemp);//十六进制字符串
-						
-						
-						//通知
-						notifyObservers(temperature);
-						
-						
-						//调用方法将数据传递到HomeActivity中
-						
-						
-						Log.i(TAG, "当前温度"+temperature);
-						byte[] byteAddr = new byte[2];
-						byteAddr[0] = buf[i + 9];
-						byteAddr[1] = buf[i + 10];
-						TemperData.strNO = new StringBuffer(StringUtils.bytesToHexString(byteAddr));
-					}
-				}
+//				for (int i = 0; i < length; i++) {
+//					if (buf[i] == -1) {
+//						byte[] byteTemp = new byte[2];//体温字节码数据
+//						byteTemp[0] = buf[i + 1];
+//						byteTemp[1] = buf[i + 2];
+//						temperature=StringUtils.bytesToHexString(byteTemp);//十六进制字符串
+//						//通知
+//						notifyObservers(temperature);
+//						//调用方法将数据传递到HomeActivity中
+//						Log.i(TAG, "当前温度"+temperature);
+//						byte[] byteAddr = new byte[2];
+//						byteAddr[0] = buf[i + 9];
+//						byteAddr[1] = buf[i + 10];
+//						TemperData.strNO = new StringBuffer(StringUtils.bytesToHexString(byteAddr));
+//					}
+//				}
 
 				TemperData.text = new StringBuffer(StringUtils.bytesToHexString(buf));
 				System.out.println("收到客户端消息：" + TemperData.text);

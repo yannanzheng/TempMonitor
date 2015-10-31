@@ -66,7 +66,7 @@ public class StudentDao {
 						Student stu = new Student();
 						stu.setDeviceID(stuNO);
 						stu.setAddress("00");
-						stu.setAge(00);
+						stu.setAge("00");
 						stu.setName("00");
 						stu.setSex("00");
 						daoOpe.create(stu);

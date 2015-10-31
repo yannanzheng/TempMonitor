@@ -25,7 +25,7 @@ public class StudentDaoTest extends AndroidTestCase{
 		Student stu1=new Student();
 		stu1.setDeviceID(1+"");
 		stu1.setName("zhangsan");
-		stu1.setAge(2);
+		stu1.setAge("2");
 		Log.i(TAG, "Ñ§Éú1£º"+stu1.toString());
 		
 		Student stu2=new Student();

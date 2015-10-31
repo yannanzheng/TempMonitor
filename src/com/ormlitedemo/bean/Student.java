@@ -35,7 +35,7 @@ public class Student implements Serializable{
      * ÄêÁä
      */
     @DatabaseField  
-    private int age; 
+    private String age; 
     
     /**
      * ĞÔ±ğ
@@ -75,14 +75,15 @@ public class Student implements Serializable{
         this.name = name;  
     }  
       
-    public int getAge() {  
-        return age;  
-    }  
-    public void setAge(int age) {  
-        this.age = age;  
-    }  
+    
       
-    public String getSex() {  
+    public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getSex() {  
         return sex;  
     }  
     public void setSex(String sex) {  

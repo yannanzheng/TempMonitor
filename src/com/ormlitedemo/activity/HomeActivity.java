@@ -36,8 +36,6 @@ public class HomeActivity extends Activity implements TemperatureObserver{
     private ListView stuListView;  
     private static final String TAG = "HomeActivity";
     private static final int TEMPERATURE_CHANGED=1;
-    
-    
     private List<Student> allStudentsList=null;  
     private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
@@ -59,16 +57,28 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 		}
 	};
 	
+	
+	
 
-    @Override  
+    @Override
+	protected void onPause() {
+		super.onPause();
+		temperatureData.removeObserver(this);
+		
+	}
+
+
+	@Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);  
         mContext = getApplicationContext(); 
+       
+        temperatureData = TemperatureData.getTemperatureData();
         
-        
-        
+        thread = new Thread(temperatureData);
+        thread.start();
         //模拟数据接收 
  //       dataEngineMonitor(2000);
         initView();  
@@ -79,9 +89,12 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 			public void onClick(View v) {
 				//TODO 添加学生
 				//Toast.makeText(mContext, "添加学生", 0).show();
+				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
+				//startActivity(intent);
 				
-				startActivity(new Intent(getApplicationContext(),AddStudentActivity.class));
+				//startActivityForResult(intent, requestCode, options);
 				
+				startActivityForResult(intent, 40);
 			}
 		});
         
@@ -91,9 +104,8 @@ public class HomeActivity extends Activity implements TemperatureObserver{
         
         adapter = new StudentsAdapter(); 
      	stuListView.setAdapter(adapter); 
-     	allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
-     	adapterStudents.clear();
-     	adapterStudents.addAll(allStudentsList);
+     	
+     	
      	
      	
      	stuListView.setOnItemClickListener(new OnItemClickListener() {
@@ -112,18 +124,30 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 
 
 @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode==40) {
+			
+		}
+
+}
+
+
+@Override
 	protected void onResume() {
 		super.onResume();
-		temperatureData = TemperatureData.getTemperatureData();
-        temperatureData.registerObserver(this);
-        new Thread(temperatureData).start();
+		allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
+		adapterStudents.clear();
+     	adapterStudents.addAll(allStudentsList);
+     	temperatureData.registerObserver(this);
 		
 	}
 
 
 	//*************************************模拟数据上边界***************************************************
-    private int j=0;
-private TemperatureData temperatureData;
+private int j=0;
+public static TemperatureData temperatureData;
+private Thread thread;
    /**
     * 模拟数据发送
     * @param delay 数据发送的间隔时间
@@ -258,8 +282,5 @@ private TemperatureData temperatureData;
 		
 	}
     
-    
-    
-
 
 }
