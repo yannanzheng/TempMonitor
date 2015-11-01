@@ -20,7 +20,7 @@ public class Student implements Serializable{
 	/**
 	 * 佩戴设备的id,这个可以重用
 	 */
-    @DatabaseField  
+    @DatabaseField 
     private String deviceID; 
     
    

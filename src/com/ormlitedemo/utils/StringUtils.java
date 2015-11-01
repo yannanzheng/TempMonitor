@@ -7,27 +7,42 @@ public class StringUtils {
 	 * @param src
 	 * @return
 	 */
-	public static String bytesToHexString(byte[] src) {
-		System.out.println("---------------------");
-		for(byte b : src)
-		{
-			System.out.print(b);
-		}
-		System.out.println("-------------------------");
+	public static String bytesToHexString(byte[] src, int length) {
 		StringBuilder stringBuilder = new StringBuilder("");
 		if (src == null || src.length <= 0) {
 			return null;
 		}
-		for (int i = 0; i < src.length; i++) {
+		for (int i = 0; i < length; i++) {
 			int v = src[i] & 0xff;
 			String hv = Integer.toHexString(v);
-			System.out.println("hv---->"+hv);
 			if (hv.length() < 2) {
 				stringBuilder.append(0);
 			}
+			
+//			if (i==length-1) {
+//				stringBuilder.append(hv);
+//			}else{
+//				stringBuilder.append(hv+":");
+//			}
+			
 			stringBuilder.append(hv);
+			
 		}
+		System.out.println("解析过后的数据："+stringBuilder.toString());
+		
 		return stringBuilder.toString();
 
 	}
+	
+	public static String parseTemperature(String strData){
+		String strTemp=strData.substring(0,4);
+		return strTemp;
+		
+	}
+	public static String parseDeviceId(String strData){
+		String strDeviceId=strData.substring(4);
+		return strDeviceId;
+		
+	}
+	
 }
