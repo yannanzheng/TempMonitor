@@ -14,13 +14,13 @@ public class Student implements Serializable{
 	 /**
      * 学号
      */
-    @DatabaseField(id=true)
+    @DatabaseField
     private String stuNo;  
 	
 	/**
 	 * 佩戴设备的id,这个可以重用
 	 */
-    @DatabaseField 
+    @DatabaseField(id=true) 
     private String deviceID; 
     
    

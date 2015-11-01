@@ -67,7 +67,7 @@ public class StudentDaoTest extends AndroidTestCase{
 	public void testGetStudent(){
 		String stuNO="4";
 		StudentDao dao=StudentDao.getStudentDao(getContext());
-		Student stu=dao.getStudent(stuNO);
+		Student stu=dao.getStudentById(stuNO);
 		Log.i(TAG, "找到的学生是"+stu.toString());
 		
 	}
@@ -75,7 +75,7 @@ public class StudentDaoTest extends AndroidTestCase{
 	public void testIsExistStudent() throws Exception{
 		String stuNO="1";
 		StudentDao dao=StudentDao.getStudentDao(getContext());
-		boolean right=dao.isExistStudent(stuNO);
+		boolean right=dao.isExistDevice(stuNO);
 		assertEquals(right, true);
 	
 	}

@@ -19,7 +19,7 @@ import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
  */
 public class StudentDao {
 	
-	private Dao<Student, String> daoOpe;
+	private static Dao<Student, String> daoOpe;
 	private TemperatureMonitorDatabaseHelper helper;
 	private static final String TAG="STUDENTDAO";
 	private  static StudentDao stuDao=null;
@@ -61,7 +61,7 @@ public class StudentDao {
 	public boolean addStudentByID(String stuNO){
 		try {
 			
-					if (!isExistStudent(stuNO)) {
+					if (!isExistDevice(stuNO)) {
 						Log.i(TAG, "addStudent 该学生不存在");
 						Student stu = new Student();
 						stu.setDeviceID(stuNO);
@@ -85,19 +85,20 @@ public class StudentDao {
 			
 			if (!(stu==null)) {
 				Log.i(TAG, "addStudent stu不为空");
-				String stuNO=stu.getStuNo();
-				if (!(stuNO==null)) {
+				//String stuNO=stu.getStuNo();
+				String strDeviceId=stu.getDeviceID();
+				if (!(strDeviceId==null)) {
 					Log.i(TAG, "addStudent stuNO不为空");
-					if (!isExistStudent(stuNO)) {
-						Log.i(TAG, "addStudent 该学生不存在");
+					if (!isExistDevice(strDeviceId)) {
+						Log.i(TAG, "addStudent 该设备不存在");
 						
 						//stucentDaoOpe.create(stu);
 						daoOpe.create(stu);
-						Log.i(TAG, "addStudent 该学生存在"+stu.toString());
+						Log.i(TAG, "addStudent 该已经存在"+stu.toString());
 						
 						return true;
 					}else{
-						Log.i(TAG, "addStudent 该学生已存在");
+						Log.i(TAG, "addStudent 该设备已存在");
 					}
 					
 				}
@@ -113,8 +114,8 @@ public class StudentDao {
 	 * 数据库中是否有该学生
 	 * @param stuNO
 	 */
-	public boolean isExistStudent(String stuNO) {
-		Student stu=getStudent(stuNO);
+	public static boolean isExistDevice(String id) {
+		Student stu=getStudentById(id);
 		if (stu==null) {
 			return false;
 		}
@@ -127,7 +128,7 @@ public class StudentDao {
 	 * @param stuNO
 	 * @return
 	 */
-	public Student getStudent(String stuNO){
+	public static Student getStudentById(String stuNO){
 		
 		Student stu=null;
 		try {
@@ -157,6 +158,8 @@ public class StudentDao {
 	}
 	
 	
+	
+	
 	/**
 	 * TODO 更新学生信息
 	 * @param stu
@@ -165,6 +168,7 @@ public class StudentDao {
 	public boolean updateStudent(Student stu){
 		try {
 			Student dbStu=daoOpe.queryForSameId(stu);
+			//空指针异常
 			if (!dbStu.equals(stu)) {
 				daoOpe.update(stu);
 				return true;

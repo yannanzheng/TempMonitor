@@ -2,6 +2,7 @@ package com.ormlitedemo.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.ormlitedemo.R;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
+import com.ormlitedemo.utils.StringUtils;
 import com.ormlitedemo.wifi.TemperatureData;
 import com.ormlitedemo.wifi.TemperatureObserver;
 
@@ -46,11 +48,12 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				String strTem=(String) msg.obj;
+				String strTem=StringUtils.parseTemperature((String) msg.obj);
 				add_student_temper_tv.setText(strTem);
 				break;
 
 			default:
+				
 				break;
 			}
 		}
@@ -95,7 +98,9 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		
 		thread = new Thread(temperatureData);
 		thread.start();
-	        
+		
+		mStudent=(Student) getIntent().getSerializableExtra("student");
+	    
 	        //注册号了没有呢？
 	        //TODO 暂时粗暴的这么做了！
 	       // new Thread(temperatureData).start();
@@ -115,6 +120,16 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		add_student_finished_tv = (TextView) findViewById(R.id.add_student_finished_tv);
 		add_student_finished_tv.setOnClickListener(this);
 		add_student_device_id_et = (EditText) findViewById(R.id.add_student_device_id_et);
+		
+		if (mStudent!=null) {
+			
+			if (mStudent.getDeviceID()!=null) {
+				
+				add_student_device_id_et.setText(mStudent.getDeviceID());//空指针异常
+			}
+		}
+		
+		
 		add_student_stuno_et = (EditText) findViewById(R.id.add_student_stuno_et);
 		add_student_name_et = (EditText) findViewById(R.id.add_student_name_et);
 		add_student_age_et = (EditText) findViewById(R.id.add_student_age_et);
@@ -175,7 +190,10 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		mStudent.setTemper(add_student_temper_tv.getText().toString());
 		mStudent.setAddress(add_student_address_et.getText().toString());
 		mStudent.setPhoneNum(add_student_phone_num_et.getText().toString());
-		StudentDao.getStudentDao(mContext).addStudent(mStudent);
+		if (!mStudent.getDeviceID().isEmpty()) {
+			
+			StudentDao.getStudentDao(mContext).addStudent(mStudent);
+		}
 		
 	}
 

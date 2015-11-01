@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.ormlitedemo.R;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
+import com.ormlitedemo.utils.StringUtils;
 import com.ormlitedemo.wifi.TemperatureData;
 import com.ormlitedemo.wifi.TemperatureObserver;
 
@@ -40,14 +41,45 @@ public class HomeActivity extends Activity implements TemperatureObserver{
     private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
     String temp;
-	private TextView add_student_tv;
+    
+//	private TextView add_student_tv;
 	
 	Handler mHandler=new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case TEMPERATURE_CHANGED:
+			{
+				String strData=(String)msg.obj;
+				String strDeviceId=StringUtils.parseDeviceId(strData);
+				String strTemp=StringUtils.parseTemperature(strData);
+				Log.i(TAG, "来信息啦！"+strData);
+				
+				
+				Student stu=new Student();
+				stu.setDeviceID(strDeviceId);
+				stu.setTemper(strTemp);
+				if (StudentDao.isExistDevice(strDeviceId)) {
+					//存在该学生，更新温度
+					Log.i(TAG, "存在学生"+strData);
+					StudentDao.getStudentDao(mContext).updateStudent(stu);
+					
+				}else{
+					//不存在该学生，新建该学生数据并保存温度数据
+					Log.i(TAG, "不存在学生"+strData);
+					stu.setName("zhangsan");
+					Log.i(TAG, "创建学生"+stu.toString());
+					StudentDao.getStudentDao(mContext).addStudent(stu);
+					
+					
+				}
+				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
+				Log.i(TAG, "查询学生"+allStudentsList.toString());//查询到的问空
+				adapterStudents.clear();
+				adapterStudents.addAll(allStudentsList);
+				
 				adapter.notifyDataSetChanged();
+			}
 				break;
 
 			default:
@@ -83,37 +115,40 @@ public class HomeActivity extends Activity implements TemperatureObserver{
  //       dataEngineMonitor(2000);
         initView();  
         
-        add_student_tv.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				//TODO 添加学生
-				//Toast.makeText(mContext, "添加学生", 0).show();
-				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
-				//startActivity(intent);
-				
-				//startActivityForResult(intent, requestCode, options);
-				
-				startActivityForResult(intent, 40);
-			}
-		});
-        
-        
+        //去掉改功能
+//        add_student_tv.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				//TODO 添加学生
+//				//Toast.makeText(mContext, "添加学生", 0).show();
+//				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
+//				//startActivity(intent);
+//				
+//				//startActivityForResult(intent, requestCode, options);
+//				
+//				startActivityForResult(intent, 40);
+//			}
+//		});
         
         
         
         adapter = new StudentsAdapter(); 
      	stuListView.setAdapter(adapter); 
      	
-     	
-     	
-     	
      	stuListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(mContext, "点击项目是"+position, 0).show();
+				
+				
+				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
+				Student stu=(Student) parent.getAdapter().getItem(position);
+				intent.putExtra("student", stu);
+				//intent.put
+				startActivityForResult(intent, 40);
+				//Toast.makeText(mContext, "点击项目是"+position, 0).show();
 				
 			}
 		});
@@ -209,7 +244,9 @@ private Thread thread;
 
 
 	private void initView() {
-		add_student_tv = (TextView) findViewById(R.id.add_student_bt);
+//		add_student_tv = (TextView) findViewById(R.id.add_student_bt);
+		
+		
         stuListView = (ListView)findViewById(R.id.stu_lv);
 	}
     
@@ -266,17 +303,18 @@ private Thread thread;
     }
 
 	@Override
-	public void updateTemperature(String temper) {
+	public void updateTemperature(String strData) {
 		//温度改变了
-		Log.i(TAG, "温度改变了。。。"+temper);//测试回调成功
+		//Log.i(TAG, "温度改变了。。。"+temper);//测试回调成功
 		Message msg=Message.obtain();
 		msg.what=TEMPERATURE_CHANGED;
+		msg.obj=strData;
 		//updateTemper(temper);
-		for (int i = 0; i < adapterStudents.size(); i++) {
-			
-			adapterStudents.get(i).setTemper(temper+"摄氏度");
-			
-		}
+//		for (int i = 0; i < adapterStudents.size(); i++) {
+//			
+//			adapterStudents.get(i).setTemper(strData+"摄氏度");
+//			
+//		}
 		mHandler.sendMessage(msg);
 		
 		

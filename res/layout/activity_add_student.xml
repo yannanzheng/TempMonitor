@@ -155,7 +155,6 @@
             android:id="@+id/add_student_temper_tv"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" 
-            android:text="36.5摄氏度"
             />
     </LinearLayout>
 

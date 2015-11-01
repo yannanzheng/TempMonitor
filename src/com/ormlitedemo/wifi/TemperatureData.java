@@ -54,7 +54,7 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 			while (true) {
 				int length = in.read(byteSrc);
 				//System.out.println("读取到的数据的长度--->"+length);
-				//Log.i(TAG, "原始字节数据" + byteSrc.toString());
+				Log.i(TAG, "原始字节数据" + byteSrc.toString());
 				String strSrc=StringUtils.bytesToHexString(byteSrc, length);
 //				Log.i(TAG, "原始数据转为16进制字符串" + strSrc);
 				
@@ -116,6 +116,8 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 						Log.i(TAG, "设备strDeviceNo=" + strDeviceNo);
 						Log.i(TAG, "***********************结束一条**************************");
 					}
+					
+					
 				}
 				
 				
