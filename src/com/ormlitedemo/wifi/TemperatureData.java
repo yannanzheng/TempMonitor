@@ -92,28 +92,28 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 						String strData=StringUtils.bytesToHexString(data, data.length);
 						notifyObservers(strData);
 						
-						//解析出该设备的温度数据和设备id
-						byte[] byteTemp=new byte[2];
-						byteTemp[0]=byteSrc[i+1];
-						byteTemp[1]=byteSrc[i+2];
-						//转换成字符串
-						String strTemper=StringUtils.bytesToHexString(byteTemp, byteTemp.length);
-						Log.i(TAG, "温度数据:strTemper=" +strTemper);
-						//截取体温数据后面的几个字节作为设备的id
-						byte[] byteDeviceNo=new byte[8];
-						byteDeviceNo[0]=byteSrc[i+3];
-						byteDeviceNo[1]=byteSrc[i+4];
-						byteDeviceNo[2]=byteSrc[i+5];
-						byteDeviceNo[3]=byteSrc[i+6];
-						byteDeviceNo[4]=byteSrc[i+7];
-						byteDeviceNo[5]=byteSrc[i+8];
-						byteDeviceNo[6]=byteSrc[i+9];
-						byteDeviceNo[7]=byteSrc[i+10];
-						String strDeviceNo=StringUtils.bytesToHexString(byteDeviceNo, byteDeviceNo.length);
-						
-						//通知温度改变
-						//notifyObservers(strTemper);
-						Log.i(TAG, "设备strDeviceNo=" + strDeviceNo);
+//						//解析出该设备的温度数据和设备id
+//						byte[] byteTemp=new byte[2];
+//						byteTemp[0]=byteSrc[i+1];
+//						byteTemp[1]=byteSrc[i+2];
+//						//转换成字符串
+//						String strTemper=StringUtils.bytesToHexString(byteTemp, byteTemp.length);
+//						Log.i(TAG, "温度数据:strTemper=" +strTemper);
+//						//截取体温数据后面的几个字节作为设备的id
+//						byte[] byteDeviceNo=new byte[8];
+//						byteDeviceNo[0]=byteSrc[i+3];
+//						byteDeviceNo[1]=byteSrc[i+4];
+//						byteDeviceNo[2]=byteSrc[i+5];
+//						byteDeviceNo[3]=byteSrc[i+6];
+//						byteDeviceNo[4]=byteSrc[i+7];
+//						byteDeviceNo[5]=byteSrc[i+8];
+//						byteDeviceNo[6]=byteSrc[i+9];
+//						byteDeviceNo[7]=byteSrc[i+10];
+//						String strDeviceNo=StringUtils.bytesToHexString(byteDeviceNo, byteDeviceNo.length);
+//						
+//						//通知温度改变
+//						//notifyObservers(strTemper);
+//						Log.i(TAG, "设备strDeviceNo=" + strDeviceNo);
 						Log.i(TAG, "***********************结束一条**************************");
 					}
 					
@@ -148,6 +148,7 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 	}
 
 
+	
 	@Override
 	public void notifyObservers(String temp) {
 		for (int i = 0; i < observers.size(); i++) {
