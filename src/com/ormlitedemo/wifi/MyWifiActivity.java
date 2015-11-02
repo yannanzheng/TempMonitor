@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.ormlitedemo.R;
-import com.ormlitedemo.TemperData;
+import com.ormlitedemo.App;
 
 /**
  * TODO 应该改造成一个服务，在打开主界面的时候就开启。 该类驱动体温的改变。 不断接受来自硬件端的数据
@@ -53,7 +53,7 @@ public class MyWifiActivity extends Activity {
 	private void initView() {
 		dataview = (EditText) findViewById(R.id.dataview);
 		wifi_start_bt = (Button) findViewById(R.id.wifi_start_bt);
-		dataview.setText(TemperData.text);
+//		dataview.setText(App.text);
 	}
 
 	// 接收到的数据更新显示，测试
@@ -62,7 +62,7 @@ public class MyWifiActivity extends Activity {
 			@Override
 			public void run() {
 
-				dataview.setText(TemperData.text);
+//				dataview.setText(App.text);
 			}
 		});
 	}

@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.ormlitedemo.dao.StudentDao;
@@ -15,7 +17,7 @@ import com.ormlitedemo.utils.StringUtils;
  * @author jfy
  *
  */
-public class TemperatureData implements Runnable,TemperatureSubject {
+public class TemperatureData implements Runnable,TemperatureSubject,NetworkStateChangedCallback {
 
 	//TODO 应该监控wifi连接，一旦连接上wifi，通知这边开启，没有的话就提示网络连接之类的
 	private static final String TAG = "TemperatureData";
@@ -44,8 +46,15 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 	public void run() {
 		try {
 
+//			WifiManager wifiManager=(WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+//			WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+//			//Log.i(TAG, "接收到广播了");
+//			Log.i(TAG, "连接到的wifi为"+wifiInfo.getSSID());
+			
 			Socket s = new Socket("192.168.2.3", 5000);
-			Log.i(TAG, "Socket连接状态为"+s.isConnected());
+			boolean connectState=s.isConnected();
+			
+			Log.i(TAG, "Socket连接状态为"+connectState);
 			
 			
 			InputStream in = s.getInputStream();
@@ -56,20 +65,6 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 				//System.out.println("读取到的数据的长度--->"+length);
 				Log.i(TAG, "原始字节数据" + byteSrc.toString());
 				String strSrc=StringUtils.bytesToHexString(byteSrc, length);
-//				Log.i(TAG, "原始数据转为16进制字符串" + strSrc);
-				
-				
-//				if (strSrc.contains("ff")) {
-//					//对字符串进行切割
-//					String strData=strSrc.substring(strSrc.indexOf("ff")+2);
-//					Log.i(TAG, "切割一次的字符串"+strData);
-//					String strTemp=strData.substring(0, 4);
-//					Log.i(TAG, "温度"+strTemp);
-//					String strDeivceId=strData.substring(4);
-//					Log.i(TAG, "设备id"+strDeivceId);
-//					
-//					
-//				}
 				
 				
 				//字符串
@@ -88,32 +83,10 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 						data[7]=byteSrc[i+8];
 						data[8]=byteSrc[i+9];
 						data[9]=byteSrc[i+10];
-						
 						String strData=StringUtils.bytesToHexString(data, data.length);
+						
 						notifyObservers(strData);
 						
-//						//解析出该设备的温度数据和设备id
-//						byte[] byteTemp=new byte[2];
-//						byteTemp[0]=byteSrc[i+1];
-//						byteTemp[1]=byteSrc[i+2];
-//						//转换成字符串
-//						String strTemper=StringUtils.bytesToHexString(byteTemp, byteTemp.length);
-//						Log.i(TAG, "温度数据:strTemper=" +strTemper);
-//						//截取体温数据后面的几个字节作为设备的id
-//						byte[] byteDeviceNo=new byte[8];
-//						byteDeviceNo[0]=byteSrc[i+3];
-//						byteDeviceNo[1]=byteSrc[i+4];
-//						byteDeviceNo[2]=byteSrc[i+5];
-//						byteDeviceNo[3]=byteSrc[i+6];
-//						byteDeviceNo[4]=byteSrc[i+7];
-//						byteDeviceNo[5]=byteSrc[i+8];
-//						byteDeviceNo[6]=byteSrc[i+9];
-//						byteDeviceNo[7]=byteSrc[i+10];
-//						String strDeviceNo=StringUtils.bytesToHexString(byteDeviceNo, byteDeviceNo.length);
-//						
-//						//通知温度改变
-//						//notifyObservers(strTemper);
-//						Log.i(TAG, "设备strDeviceNo=" + strDeviceNo);
 						Log.i(TAG, "***********************结束一条**************************");
 					}
 					
@@ -154,6 +127,12 @@ public class TemperatureData implements Runnable,TemperatureSubject {
 		for (int i = 0; i < observers.size(); i++) {
 			observers.get(i).updateTemperature(temp);
 		}
+		
+	}
+
+	@Override
+	public void networkStateChangedCallback() {
+		Log.i(TAG, "回调，网络状态发生了改变");
 		
 	}
 

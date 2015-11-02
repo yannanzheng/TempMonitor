@@ -2,7 +2,7 @@ package com.ormlitedemo.test;
 
 import java.util.List;
 
-import com.ormlitedemo.TemperData;
+import com.ormlitedemo.App;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 
@@ -17,16 +17,16 @@ public class HomeActivityTest extends AndroidTestCase {
 		List<Student> stus=StudentDao.getStudentDao(getContext()).getAllStudent();
 		
 		
-			for (int i = 0; i < stus.size(); i++) {
-				if (!(TemperData.strTemp==null)) {
-					
-					stus.get(i).setTemper(TemperData.strTemp.toString());
-					Log.i(TAG, stus.get(i).getTemper());
-				}else {
-					Log.i(TAG, "strTempÎª¿Õ");
-				}
-			
-		}
+//			for (int i = 0; i < stus.size(); i++) {
+//				if (!(App.strTemp==null)) {
+//					
+//					stus.get(i).setTemper(App.strTemp.toString());
+//					Log.i(TAG, stus.get(i).getTemper());
+//				}else {
+//					Log.i(TAG, "strTempÎª¿Õ");
+//				}
+//			
+//		}
 		
 		
 	}

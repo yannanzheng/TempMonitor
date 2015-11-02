@@ -9,6 +9,8 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -107,6 +109,8 @@ public class HomeActivity extends Activity implements TemperatureObserver{
         setContentView(R.layout.activity_home);  
         mContext = getApplicationContext(); 
        
+        
+        
         temperatureData = TemperatureData.getTemperatureData();
         
         thread = new Thread(temperatureData);
