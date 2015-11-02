@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -30,10 +29,11 @@ import com.example.ormlitedemo.R;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.utils.StringUtils;
+import com.ormlitedemo.wifi.NetworkStateChangedCallback;
 import com.ormlitedemo.wifi.TemperatureData;
 import com.ormlitedemo.wifi.TemperatureObserver;
 
-public class HomeActivity extends Activity implements TemperatureObserver{
+public class HomeActivity extends Activity implements TemperatureObserver,NetworkStateChangedCallback{
 	   
     private Context mContext;  
     private ListView stuListView;  
@@ -43,6 +43,7 @@ public class HomeActivity extends Activity implements TemperatureObserver{
     private List<Student> adapterStudents=new ArrayList<Student>();  
     private StudentsAdapter adapter;  
     String temp;
+    public static HomeActivity homeActivity;
     
 //	private TextView add_student_tv;
 	
@@ -64,7 +65,8 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 				if (StudentDao.isExistDevice(strDeviceId)) {
 					//存在该学生，更新温度
 					Log.i(TAG, "存在学生"+strData);
-					StudentDao.getStudentDao(mContext).updateStudent(stu);
+					//应该问题出在这里，更新的是整个学生的数据，而不仅仅是温度了
+					StudentDao.getStudentDao(mContext).updateTemperatureById(strDeviceId, strTemp);
 					
 				}else{
 					//不存在该学生，新建该学生数据并保存温度数据
@@ -81,6 +83,8 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 				adapterStudents.addAll(allStudentsList);
 				
 				adapter.notifyDataSetChanged();
+				
+				
 			}
 				break;
 
@@ -98,6 +102,13 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 	protected void onPause() {
 		super.onPause();
 		temperatureData.removeObserver(this);
+//		try {
+//			thread.wait();
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		
 	}
 
@@ -108,13 +119,37 @@ public class HomeActivity extends Activity implements TemperatureObserver{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_home);  
         mContext = getApplicationContext(); 
+        homeActivity=this;
+        
+        wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
+		wifiInfo = wifiManager.getConnectionInfo();
+		strWifiSSID = wifiInfo.getSSID();
+		String strWiFi="\"R2WiFi\"";
+		Log.i(TAG, "连接到的wifi为"+strWifiSSID);
+		
+		Log.i(TAG, "连接到的wifi为"+strWifiSSID.equals(strWiFi));
+		
+		
+		if (strWifiSSID.equals("R2WiFi")) {
+			Log.i(TAG, "已经连接上R2WiFi");
+			//不知为何不能
+			
+		}else{
+			
+			Log.i(TAG, "请连接R2WiFi");
+		}
+		
+		
+		temperatureData = TemperatureData.getTemperatureData();
+		if (strWifiSSID.equals(strWiFi)) {
+			Log.i(TAG, "已经连接上R2WiFi");
+			thread = getThread(thread, temperatureData);
+			thread.start();
+		}else{
+			Toast.makeText(mContext, "请连接上R2WiFi并重新启动应用", 1).show();
+		}
+		
        
-        
-        
-        temperatureData = TemperatureData.getTemperatureData();
-        
-        thread = new Thread(temperatureData);
-        thread.start();
         //模拟数据接收 
  //       dataEngineMonitor(2000);
         initView();  
@@ -149,6 +184,7 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 				
 				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
 				Student stu=(Student) parent.getAdapter().getItem(position);
+				Log.i(TAG, "学生条目数据"+stu.toString());
 				intent.putExtra("student", stu);
 				//intent.put
 				startActivityForResult(intent, 40);
@@ -160,6 +196,14 @@ public class HomeActivity extends Activity implements TemperatureObserver{
      	
      
     }
+	
+	private Thread getThread(Thread thread,Runnable runnable){
+		if (thread==null) {
+			thread=new Thread(runnable);
+		}
+		
+		return thread;
+	}
 
 
 @Override
@@ -178,7 +222,8 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 		allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
 		adapterStudents.clear();
      	adapterStudents.addAll(allStudentsList);
-     	temperatureData.registerObserver(this);
+     	
+     	temperatureData.registerObserver(this);//空指针异常
 		
 	}
 
@@ -187,6 +232,9 @@ public class HomeActivity extends Activity implements TemperatureObserver{
 private int j=0;
 public static TemperatureData temperatureData;
 private Thread thread;
+private WifiManager wifiManager;
+private WifiInfo wifiInfo;
+private String strWifiSSID;
    /**
     * 模拟数据发送
     * @param delay 数据发送的间隔时间
@@ -320,6 +368,34 @@ private Thread thread;
 //			
 //		}
 		mHandler.sendMessage(msg);
+		
+		
+	}
+
+
+	@Override
+	public synchronized void networkStateChangedCallback() {
+		Log.i(TAG, "HomeActivity接收到了广播信息");
+		
+		//应该检查是否为所需要的网络，如果是就将开启线程
+		
+		String strWifiSSID = wifiManager.getConnectionInfo().getSSID().trim();
+		Log.i(TAG, "ssid="+strWifiSSID);
+		temperatureData = TemperatureData.getTemperatureData();
+		thread = getThread(thread, temperatureData);
+		
+		Log.i(TAG, "ssidequals(strWifiSSID)"+"R2WiFi".equals(strWifiSSID));
+		if ("\"R2WiFi\"".equals(strWifiSSID)) {
+			Log.i(TAG, "已经连接上R2WiFi");
+			
+			if (!thread.isAlive()) {
+				//两次启动导致崩溃
+				
+				thread.start();
+				
+				
+			}
+		}
 		
 		
 	}

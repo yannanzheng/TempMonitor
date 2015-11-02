@@ -160,6 +160,8 @@ public class StudentDao {
 	
 	
 	
+	
+	
 	/**
 	 * TODO 更新学生信息
 	 * @param stu
@@ -171,6 +173,22 @@ public class StudentDao {
 			//空指针异常
 			if (!dbStu.equals(stu)) {
 				daoOpe.update(stu);
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	public boolean updateTemperatureById(String strDeviceId,String temp){
+		try {
+			Student dbStu=daoOpe.queryForId(strDeviceId);
+			//空指针异常
+			if (dbStu!=null) {
+				dbStu.setTemper(temp);
+				daoOpe.update(dbStu);
 				return true;
 			}
 		} catch (SQLException e) {

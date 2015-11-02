@@ -45,6 +45,7 @@
         <receiver android:name="com.ormlitedemo.receiver.WiFiBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 
             </intent-filter>

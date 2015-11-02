@@ -81,6 +81,8 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 
 	private Thread thread;
 
+	private Student stu;
+
 
 
 	/** Called when the activity is first created. */
@@ -91,7 +93,8 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		setContentView(R.layout.activity_add_student);
 
 		mContext=getApplicationContext();
-		
+		stu = (Student) getIntent().getSerializableExtra("student");
+		Log.i(TAG, "传递过来的学生"+stu.toString());
 		initializeViews();
 		temperatureData = HomeActivity.temperatureData;
 		//注册，开启线程
@@ -120,7 +123,7 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		add_student_finished_tv = (TextView) findViewById(R.id.add_student_finished_tv);
 		add_student_finished_tv.setOnClickListener(this);
 		add_student_device_id_et = (EditText) findViewById(R.id.add_student_device_id_et);
-		
+		add_student_device_id_et.setText(stu.getDeviceID());
 		if (mStudent!=null) {
 			
 			if (mStudent.getDeviceID()!=null) {
@@ -190,9 +193,18 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		mStudent.setTemper(add_student_temper_tv.getText().toString());
 		mStudent.setAddress(add_student_address_et.getText().toString());
 		mStudent.setPhoneNum(add_student_phone_num_et.getText().toString());
+		
 		if (!mStudent.getDeviceID().isEmpty()) {
 			
-			StudentDao.getStudentDao(mContext).addStudent(mStudent);
+			boolean isStudentExist=StudentDao.isExistDevice(mStudent.getDeviceID());
+			
+			if (isStudentExist) {
+				//存在该学生
+				StudentDao.getStudentDao(mContext).updateStudent(mStudent);
+			}else{
+				
+				StudentDao.getStudentDao(mContext).addStudent(mStudent);
+			}
 		}
 		
 	}

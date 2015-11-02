@@ -1,5 +1,6 @@
 package com.ormlitedemo.receiver;
 
+import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.wifi.TemperatureData;
 
 import android.content.BroadcastReceiver;
@@ -10,20 +11,26 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+
+
 /**
- * 当连接上R2wifi的时候通知开启socket连接
+ * 
  * @author jfy
  *
  */
 public class WiFiBroadcastReceiver extends BroadcastReceiver {
 
+	/**
+	 * 切花wifi的时候不会得到通知
+	 */
+	
 	public static final String TAG="WiFiBroadcastReceiver";
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		//网络状态改变时能接收到广播
 		//通知socket尝试连接并接受数据。
-		TemperatureData.getTemperatureData().networkStateChangedCallback();
-		
+		//TemperatureData.getTemperatureData().networkStateChangedCallback();
+		HomeActivity.homeActivity.networkStateChangedCallback();
 		
 		
 		//ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
