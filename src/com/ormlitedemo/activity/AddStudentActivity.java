@@ -16,6 +16,7 @@ import com.example.ormlitedemo.R;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.utils.StringUtils;
+import com.ormlitedemo.utils.TemperatureTableUtil;
 import com.ormlitedemo.wifi.TemperatureData;
 import com.ormlitedemo.wifi.TemperatureObserver;
 
@@ -44,8 +45,9 @@ public class AddStudentActivity extends Activity implements
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				String strTem = StringUtils.parseTemperature((String) msg.obj);
-				add_student_temper_tv.setText(strTem);
+				String strTempData = StringUtils.parseTemperature((String) msg.obj);
+				String strTemp = TemperatureTableUtil.queryTemperatureByData(mContext, strTempData);
+				add_student_temper_tv.setText(strTemp);
 				break;
 
 			default:
