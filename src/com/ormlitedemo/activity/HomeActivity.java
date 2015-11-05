@@ -6,9 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -50,8 +47,6 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
     String temp;
     public static HomeActivity homeActivity;
     
-//	private TextView add_student_tv;
-	
 	Handler mHandler=new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
@@ -104,13 +99,6 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 	protected void onPause() {
 		super.onPause();
 		temperatureData.removeObserver(this);
-//		try {
-//			thread.wait();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
 		
 	}
 
@@ -136,51 +124,16 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 		wifiInfo = wifiManager.getConnectionInfo();
 		strWifiSSID = wifiInfo.getSSID();
 		String strWiFi="\"R2WiFi\"";
-		Log.i(TAG, "���ӵ���wifiΪ"+strWifiSSID);
-		
-		Log.i(TAG, "���ӵ���wifiΪ"+strWifiSSID.equals(strWiFi));
-		
-		
-		if (strWifiSSID.equals("R2WiFi")) {
-			Log.i(TAG, "�Ѿ�������R2WiFi");
-			//��֪Ϊ�β���
-			
-		}else{
-			
-			Log.i(TAG, "������R2WiFi");
-		}
-		
 		
 		temperatureData = TemperatureData.getTemperatureData();
 		if (strWifiSSID.equals(strWiFi)) {
-			Log.i(TAG, "�Ѿ�������R2WiFi");
+			Log.i(TAG, "连接上R2WiFi");
 			thread = getThread(thread, temperatureData);
 			thread.start();
 		}else{
 			Toast.makeText(mContext, "��������R2WiFi����������Ӧ��", 1).show();
 		}
-		
-       
-        //ģ�����ݽ��� 
- //       dataEngineMonitor(2000);
         initView();  
-        
-        
-//        add_student_tv.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				//TODO ���ѧ��
-//				//Toast.makeText(mContext, "���ѧ��", 0).show();
-//				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
-//				//startActivity(intent);
-//				
-//				//startActivityForResult(intent, requestCode, options);
-//				
-//				startActivityForResult(intent, 40);
-//			}
-//		});
-        
         
         
         adapter = new StudentsAdapter(); 
@@ -203,22 +156,6 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 				
 			}
 		});
-     	stuListView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				
-				
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-     	
      	
      	stuListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -260,82 +197,22 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 		adapterStudents.clear();
      	adapterStudents.addAll(allStudentsList);
      	
-     	temperatureData.registerObserver(this);//��ָ���쳣
+     	temperatureData.registerObserver(this);
 		
 	}
 
 
-	//*************************************数据模拟引擎***************************************************
-private int j=0;
 public static TemperatureData temperatureData;
 private Thread thread;
 private WifiManager wifiManager;
 private WifiInfo wifiInfo;
 private String strWifiSSID;
-   /**
-    * ģ�����ݷ���
-    * @param delay ���ݷ��͵ļ��ʱ��
-    */
-	private void dataEngineMonitor(long delay) {
-		
-		Timer timer=new Timer();
-		
-		
-        timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				
-				j++;
-				Log.i(TAG, "��ʱ��������"+j+"��");
-				
-				for (int i = 0; i < adapterStudents.size(); i++) {
-					adapterStudents.get(i).setTemper(j+"���϶�");
-					
-					//adapter.notifyDataSetChanged();
-					Message msg=Message.obtain();
-					msg.obj=""+j;
-					msg.what=1;
-					mHandler.sendEmptyMessage(1);
-					
-				}
-				
-			}
-		}, 0, delay);
-	}
-	
-	
-	//*************************************ģ�������±߽�***************************************************
 
 
-    /**
-     * �����ݿ��е��¶ȸ���Ϊ���µ��¶�
-     */
-	private void updateTemper(String temp) {
-		allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
-		
-        for (int i = 0; i < allStudentsList.size(); i++) {
-			if (temp!=null) {
-				
-				allStudentsList.get(i).setTemper(temp);
-				StudentDao.getStudentDao(mContext).updateStudent(allStudentsList.get(i));
-				adapterStudents.clear();
-				adapterStudents.addAll(allStudentsList);
-				
-			}else {
-				Log.i(TAG, "strTempΪ��");
-				allStudentsList.get(i).setTemper("36.5���϶�");
-				
-				StudentDao.getStudentDao(mContext).updateStudent(allStudentsList.get(i));
-			}
-		}
-	}
 
 
 
 	private void initView() {
-//		add_student_tv = (TextView) findViewById(R.id.add_student_bt);
-		
-		
         stuListView = (ListView)findViewById(R.id.stu_lv);
 	}
     
@@ -377,7 +254,6 @@ private String strWifiSSID;
             holder.student_number_tv.setText(objStu.getStuNo());  
             holder.student_name_tv.setText(objStu.getName());  
             holder.student_temper_tv.setText(objStu.getTemper());
-            //����ɫ���
             if ("107743" == objStu.getDeviceID())
                  holder.student_temper_tv.setTextColor(android.graphics.Color.RED);
             
@@ -393,17 +269,9 @@ private String strWifiSSID;
 
 	@Override
 	public void updateTemperature(String strData) {
-		//�¶ȸı���
-		//Log.i(TAG, "�¶ȸı��ˡ�����"+temper);//���Իص��ɹ�
 		Message msg=Message.obtain();
 		msg.what=TEMPERATURE_CHANGED;
 		msg.obj=strData;
-		//updateTemper(temper);
-//		for (int i = 0; i < adapterStudents.size(); i++) {
-//			
-//			adapterStudents.get(i).setTemper(strData+"���϶�");
-//			
-//		}
 		mHandler.sendMessage(msg);
 		
 		
@@ -412,10 +280,6 @@ private String strWifiSSID;
 
 	@Override
 	public synchronized void networkStateChangedCallback() {
-		Log.i(TAG, "HomeActivity���յ��˹㲥��Ϣ");
-		
-		//Ӧ�ü���Ƿ�Ϊ����Ҫ�����磬����Ǿͽ������߳�
-		
 		String strWifiSSID = wifiManager.getConnectionInfo().getSSID().trim();
 		Log.i(TAG, "ssid="+strWifiSSID);
 		temperatureData = TemperatureData.getTemperatureData();
@@ -423,13 +287,10 @@ private String strWifiSSID;
 		
 		Log.i(TAG, "ssidequals(strWifiSSID)"+"R2WiFi".equals(strWifiSSID));
 		if ("\"R2WiFi\"".equals(strWifiSSID)) {
-			Log.i(TAG, "�Ѿ�������R2WiFi");
 			
 			if (!thread.isAlive()) {
-				//�����������±���
 				
 				thread.start();
-				
 				
 			}
 		}
