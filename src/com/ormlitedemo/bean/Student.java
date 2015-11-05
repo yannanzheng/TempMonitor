@@ -1,24 +1,21 @@
 package com.ormlitedemo.bean;
 
-import java.io.Serializable;  
+import java.io.Serializable;
 
-import com.j256.ormlite.field.DatabaseField; 
-import com.ormlitedemo.App;
-import com.ormlitedemo.activity.AddStudentActivity;
-import com.ormlitedemo.wifi.MyWifiActivity;
+import com.j256.ormlite.field.DatabaseField;
 
 public class Student implements Serializable{
     
 	private static final long serialVersionUID = -8551683803719520351L;
 
 	 /**
-     * 学号
+     * 瀛﹀彿
      */
     @DatabaseField
     private String stuNo;  
 	
 	/**
-	 * 佩戴设备的id,这个可以重用
+	 * 浣╂埓璁惧鐨刬d,杩欎釜鍙互閲嶇敤
 	 */
     @DatabaseField(id=true) 
     private String deviceID; 
@@ -26,37 +23,37 @@ public class Student implements Serializable{
    
     
     /**
-     * 姓名
+     * 濮撳悕
      */
     @DatabaseField
     private String name;  
     
     /**
-     * 年龄
+     * 骞撮緞
      */
     @DatabaseField  
     private String age; 
     
     /**
-     * 性别
+     * 鎬у埆
      */
     @DatabaseField  
     private String sex;  
     
     /**
-     * 体温
+     * 浣撴俯
      */
     @DatabaseField  
     private String temper;
     
     /**
-     * 家庭地址
+     * 瀹跺涵鍦板潃
      */
     @DatabaseField  
     private String address;  
     
     /**
-     * 联系方式
+     * 鑱旂郴鏂瑰紡
      */
     @DatabaseField
     private String phoneNum;  
@@ -123,8 +120,12 @@ public class Student implements Serializable{
 	@Override
 	public String toString() {
 		return "Student [deviceID=" + deviceID + ", stuNo=" + stuNo + ", name="
-				+ name + ", age=" + age + ", sex=" + sex + ", temper=" + temper
-				+ ", address=" + address + ", phoneNum=" + phoneNum + "]";
+				+ name + ", age=" + age + ", sex=" + sex + ", temper=" + 
+
+temper
+				+ ", address=" + address + ", phoneNum=" + phoneNum + 
+
+"]";
 	}  
     
     

@@ -22,10 +22,12 @@ public class TemperatureMonitorDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	    }  
 	  
 	    /**  
-	     * ´´½¨SQLiteÊı¾İ¿â  
+	     * åˆ›å»ºSQLiteæ•°æ®åº“  
 	     */  
 	    @Override  
-	    public void onCreate(SQLiteDatabase sqliteDatabase, ConnectionSource connectionSource) {  
+	    public void onCreate(SQLiteDatabase sqliteDatabase, ConnectionSource 
+
+connectionSource) {  
 	        try {  
 	            TableUtils.createTable(connectionSource, Student.class);  
 	        } catch (SQLException e) {  
@@ -34,7 +36,7 @@ public class TemperatureMonitorDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	    }  
 	  
 	    /**  
-	     * ¸üĞÂSQLiteÊı¾İ¿â  
+	     * æ›´æ–°SQLiteæ•°æ®åº“  
 	     */  
 	    @Override  
 	    public void onUpgrade(  
@@ -56,16 +58,20 @@ public class TemperatureMonitorDatabaseHelper extends OrmLiteSqliteOpenHelper {
 	    
 	    public static  TemperatureMonitorDatabaseHelper instance;
 	    /**
-	     * µ¥Àı»ñÈ¡DatabaseHelper
+	     * å•ä¾‹è·å–DatabaseHelper
 	     * @param context
 	     * @return
 	     */
-	    public static synchronized TemperatureMonitorDatabaseHelper  getHelper(Context context){
+	    public static synchronized TemperatureMonitorDatabaseHelper  getHelper
+
+(Context context){
 	    	context=context.getApplicationContext();
 	    	if (instance==null) {
 				synchronized (TemperatureMonitorDatabaseHelper.class) {
 					if (instance==null) {
-						instance=new TemperatureMonitorDatabaseHelper(context);
+						instance=new 
+
+TemperatureMonitorDatabaseHelper(context);
 					}
 				}
 			}

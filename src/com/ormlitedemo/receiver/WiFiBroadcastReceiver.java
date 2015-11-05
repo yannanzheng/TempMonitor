@@ -1,15 +1,10 @@
 package com.ormlitedemo.receiver;
 
-import com.ormlitedemo.activity.HomeActivity;
-import com.ormlitedemo.wifi.TemperatureData;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.util.Log;
+
+import com.ormlitedemo.activity.HomeActivity;
 
 
 
@@ -21,14 +16,14 @@ import android.util.Log;
 public class WiFiBroadcastReceiver extends BroadcastReceiver {
 
 	/**
-	 * ÇĞ»¨wifiµÄÊ±ºò²»»áµÃµ½Í¨Öª
+	 * åˆ‡èŠ±wifiçš„æ—¶å€™ä¸ä¼šå¾—åˆ°é€šçŸ¥
 	 */
 	
 	public static final String TAG="WiFiBroadcastReceiver";
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		//ÍøÂç×´Ì¬¸Ä±äÊ±ÄÜ½ÓÊÕµ½¹ã²¥
-		//Í¨Öªsocket³¢ÊÔÁ¬½Ó²¢½ÓÊÜÊı¾İ¡£
+		//ç½‘ç»œçŠ¶æ€æ”¹å˜æ—¶èƒ½æ¥æ”¶åˆ°å¹¿æ’­
+		//é€šçŸ¥socketå°è¯•è¿æ¥å¹¶æ¥å—æ•°æ®ã€‚
 		//TemperatureData.getTemperatureData().networkStateChangedCallback();
 		HomeActivity.homeActivity.networkStateChangedCallback();
 		
@@ -36,8 +31,8 @@ public class WiFiBroadcastReceiver extends BroadcastReceiver {
 		//ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 //		WifiManager wifiManager=(WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 //		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-//		Log.i(TAG, "½ÓÊÕµ½¹ã²¥ÁË");
-//		Log.i(TAG, "Á¬½Óµ½µÄwifiÎª"+wifiInfo.getSSID());
+//		Log.i(TAG, "æ¥æ”¶åˆ°å¹¿æ’­äº†");
+//		Log.i(TAG, "è¿æ¥åˆ°çš„wifiä¸º"+wifiInfo.getSSID());
 
 	
 	

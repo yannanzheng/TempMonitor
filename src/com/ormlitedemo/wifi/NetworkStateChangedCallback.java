@@ -3,7 +3,7 @@ package com.ormlitedemo.wifi;
 public interface NetworkStateChangedCallback {
 
 	/**
-	 * 网络状态发生了改变
+	 * 缃戠粶鐘舵�佸彂鐢熶簡鏀瑰彉
 	 */
 	public void networkStateChangedCallback();
 }

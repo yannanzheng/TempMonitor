@@ -6,16 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
-import com.ormlitedemo.activity.AddStudentActivity;
-import com.ormlitedemo.activity.HomeActivity;
 import com.ormlitedemo.bean.Student;
 import com.ormlitedemo.db.TemperatureMonitorDatabaseHelper;
 /**
- * Êı¾İ¿â²Ù×÷
+ * æ•°æ®åº“æ“ä½œ
  */
 public class StudentDao {
 	
@@ -55,14 +52,14 @@ public class StudentDao {
 	
 	
 	/**
-	 * ¶Ô½ÓÊÕµÄÊı¾İ½øĞĞÊı¾İ¿âÆ¥Åä£¬ÈôÃ»ÓĞ¸ÃÓÃ»§£¬Ôò½øĞĞÌí¼Ó
+	 * å¯¹æ¥æ”¶çš„æ•°æ®è¿›è¡Œæ•°æ®åº“åŒ¹é…ï¼Œè‹¥æ²¡æœ‰è¯¥ç”¨æˆ·ï¼Œåˆ™è¿›è¡Œæ·»åŠ 
 	 * @param stu
 	 */
 	public boolean addStudentByID(String stuNO){
 		try {
 			
 					if (!isExistDevice(stuNO)) {
-						Log.i(TAG, "addStudent ¸ÃÑ§Éú²»´æÔÚ");
+						Log.i(TAG, "addStudent è¯¥å­¦ç”Ÿä¸å­˜åœ¨");
 						Student stu = new Student();
 						stu.setDeviceID(stuNO);
 						stu.setAddress("00");
@@ -72,7 +69,7 @@ public class StudentDao {
 						daoOpe.create(stu);
 						return true;
 					}else{
-						Log.i(TAG, "addStudent ¸ÃÑ§ÉúÒÑ´æÔÚ");
+						Log.i(TAG, "addStudent è¯¥å­¦ç”Ÿå·²å­˜åœ¨");
 					}
 				
 		} catch (Exception e) {
@@ -84,21 +81,21 @@ public class StudentDao {
 		try {
 			
 			if (!(stu==null)) {
-				Log.i(TAG, "addStudent stu²»Îª¿Õ");
+				Log.i(TAG, "addStudent stuä¸ä¸ºç©º");
 				//String stuNO=stu.getStuNo();
 				String strDeviceId=stu.getDeviceID();
 				if (!(strDeviceId==null)) {
-					Log.i(TAG, "addStudent stuNO²»Îª¿Õ");
+					Log.i(TAG, "addStudent stuNOä¸ä¸ºç©º");
 					if (!isExistDevice(strDeviceId)) {
-						Log.i(TAG, "addStudent ¸ÃÉè±¸²»´æÔÚ");
+						Log.i(TAG, "addStudent è¯¥è®¾å¤‡ä¸å­˜åœ¨");
 						
 						//stucentDaoOpe.create(stu);
 						daoOpe.create(stu);
-						Log.i(TAG, "addStudent ¸ÃÒÑ¾­´æÔÚ"+stu.toString());
+						Log.i(TAG, "addStudent è¯¥å·²ç»å­˜åœ¨"+stu.toString());
 						
 						return true;
 					}else{
-						Log.i(TAG, "addStudent ¸ÃÉè±¸ÒÑ´æÔÚ");
+						Log.i(TAG, "addStudent è¯¥è®¾å¤‡å·²å­˜åœ¨");
 					}
 					
 				}
@@ -111,7 +108,7 @@ public class StudentDao {
 	}
 	
 	/**
-	 * Êı¾İ¿âÖĞÊÇ·ñÓĞ¸ÃÑ§Éú
+	 * æ•°æ®åº“ä¸­æ˜¯å¦æœ‰è¯¥å­¦ç”Ÿ
 	 * @param stuNO
 	 */
 	public static boolean isExistDevice(String id) {
@@ -124,7 +121,7 @@ public class StudentDao {
 	}
 
 	/**
-	 * ¸ù¾İid²éÑ¯Ñ§Éú¶ÔÏó
+	 * æ ¹æ®idæŸ¥è¯¢å­¦ç”Ÿå¯¹è±¡
 	 * @param stuNO
 	 * @return
 	 */
@@ -142,7 +139,7 @@ public class StudentDao {
 	}
 	
 	/**
-	 * ²éÑ¯ËùÓĞÑ§Éú
+	 * æŸ¥è¯¢æ‰€æœ‰å­¦ç”Ÿ
 	 * @return
 	 */
 	public List<Student> getAllStudent(){
@@ -163,14 +160,14 @@ public class StudentDao {
 	
 	
 	/**
-	 * TODO ¸üĞÂÑ§ÉúĞÅÏ¢
+	 * TODO æ›´æ–°å­¦ç”Ÿä¿¡æ¯
 	 * @param stu
 	 * @return
 	 */
 	public boolean updateStudent(Student stu){
 		try {
 			Student dbStu=daoOpe.queryForSameId(stu);
-			//¿ÕÖ¸ÕëÒì³£
+			//ç©ºæŒ‡é’ˆå¼‚å¸¸
 			if (!dbStu.equals(stu)) {
 				daoOpe.update(stu);
 				return true;
@@ -185,7 +182,7 @@ public class StudentDao {
 	public boolean updateTemperatureById(String strDeviceId,String temp){
 		try {
 			Student dbStu=daoOpe.queryForId(strDeviceId);
-			//¿ÕÖ¸ÕëÒì³£
+			//ç©ºæŒ‡é’ˆå¼‚å¸¸
 			if (dbStu!=null) {
 				dbStu.setTemper(temp);
 				daoOpe.update(dbStu);
@@ -201,7 +198,7 @@ public class StudentDao {
 	
 	
 	/**
-	 * É¾³ıÑ§Éú
+	 * åˆ é™¤å­¦ç”Ÿ
 	 * @param stuNO
 	 * @return
 	 */

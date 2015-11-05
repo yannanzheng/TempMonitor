@@ -2,7 +2,6 @@ package com.ormlitedemo.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,50 +19,47 @@ import com.ormlitedemo.utils.StringUtils;
 import com.ormlitedemo.wifi.TemperatureData;
 import com.ormlitedemo.wifi.TemperatureObserver;
 
-public class AddStudentActivity extends Activity implements TemperatureObserver,OnClickListener{
+public class AddStudentActivity extends Activity implements
+		TemperatureObserver, OnClickListener {
 
-	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		temperatureData.registerObserver(this);
-		//¿ªÆôÏß³Ì½ÓÊÕÊı¾İ
-       
-        
-      
-		
+		// å¼€å¯çº¿ç¨‹æ¥æ”¶æ•°æ®
+
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		temperatureData.registerObserver(this);
-		
+
 	}
 
-	Handler mHandler=new Handler(){
+	Handler mHandler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				String strTem=StringUtils.parseTemperature((String) msg.obj);
+				String strTem = StringUtils.parseTemperature((String) msg.obj);
 				add_student_temper_tv.setText(strTem);
 				break;
 
 			default:
-				
+
 				break;
 			}
 		}
-		
+
 	};
-	
+
 	private Student mStudent;
-	private Context mContext=null;
-	
-	private static final String TAG="ADDSTUDENTACTIVITY";
+	private Context mContext = null;
+
+	private static final String TAG = "ADDSTUDENTACTIVITY";
 	private static final int TEMPERATURE_CHANGED = 1;
 	private TextView add_student_cancel_tv;
 	private TextView add_student_title_tv;
@@ -81,9 +77,7 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 
 	private Thread thread;
 
-	private Student stu;
-
-
+	//private Student stu;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -92,29 +86,27 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_add_student);
 
-		mContext=getApplicationContext();
-		stu = (Student) getIntent().getSerializableExtra("student");
-		Log.i(TAG, "´«µİ¹ıÀ´µÄÑ§Éú"+stu.toString());
+		mContext = getApplicationContext();
+		mStudent = (Student) getIntent().getSerializableExtra("student");
+		Log.i(TAG, "ä¼ é€’è¿‡æ¥çš„å­¦ç”Ÿ" + mStudent.toString());
 		initializeViews();
 		temperatureData = HomeActivity.temperatureData;
-		//×¢²á£¬¿ªÆôÏß³Ì
-		
+		// æ³¨å†Œï¼Œå¼€å¯çº¿ç¨‹
+
 		thread = new Thread(temperatureData);
 		thread.start();
-		
-		mStudent=(Student) getIntent().getSerializableExtra("student");
-	    
-	        //×¢²áºÅÁËÃ»ÓĞÄØ£¿
-	        //TODO ÔİÊ±´Ö±©µÄÕâÃ´×öÁË£¡
-	       // new Thread(temperatureData).start();
-	        Log.i(TAG, "oncreate()"+temperatureData.observers.toString());
-	        
-	        
+
+		mStudent = (Student) getIntent().getSerializableExtra("student");
+
+		// æ³¨å†Œå·äº†æ²¡æœ‰å‘¢ï¼Ÿ
+		// TODO æš‚æ—¶ç²—æš´çš„è¿™ä¹ˆåšäº†ï¼
+		// new Thread(temperatureData).start();
+		Log.i(TAG, "oncreate()" + temperatureData.observers.toString());
 
 	}
 
 	/**
-	 * ³õÊ¼»¯UI½çÃæ
+	 * åˆå§‹åŒ–UIç•Œé¢
 	 */
 	private void initializeViews() {
 		add_student_cancel_tv = (TextView) findViewById(R.id.add_student_cancel_tv);
@@ -123,44 +115,66 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 		add_student_finished_tv = (TextView) findViewById(R.id.add_student_finished_tv);
 		add_student_finished_tv.setOnClickListener(this);
 		add_student_device_id_et = (EditText) findViewById(R.id.add_student_device_id_et);
-		add_student_device_id_et.setText(stu.getDeviceID());
-		if (mStudent!=null) {
-			
-			if (mStudent.getDeviceID()!=null) {
-				
-				add_student_device_id_et.setText(mStudent.getDeviceID());//¿ÕÖ¸ÕëÒì³£
-			}
-		}
-		
-		
+		add_student_device_id_et.setText(mStudent.getDeviceID());
 		add_student_stuno_et = (EditText) findViewById(R.id.add_student_stuno_et);
+		add_student_stuno_et.setText(mStudent.getStuNo());
 		add_student_name_et = (EditText) findViewById(R.id.add_student_name_et);
+		add_student_name_et.setText(mStudent.getName());
 		add_student_age_et = (EditText) findViewById(R.id.add_student_age_et);
+		add_student_age_et.setText(mStudent.getAge());
 		add_student_gender_et = (EditText) findViewById(R.id.add_student_gender_et);
+		add_student_gender_et.setText(mStudent.getSex());
 		add_student_temper_tv = (TextView) findViewById(R.id.add_student_temper_tv);
+		add_student_temper_tv.setText(mStudent.getTemper());
 		add_student_address_et = (EditText) findViewById(R.id.add_student_address_et);
 		add_student_phone_num_et = (EditText) findViewById(R.id.add_student_phone_num_et);
-		
+		add_student_phone_num_et.setText(mStudent.getPhoneNum());
+		if (mStudent != null) {
 
-		
+			if (mStudent.getDeviceID() != null) {
+
+				add_student_device_id_et.setText(mStudent.getDeviceID());// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			if (mStudent.getName() != null) {
+
+				add_student_name_et.setText(mStudent.getName());// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			if (mStudent.getAge() != null) {
+				
+				add_student_age_et.setText(mStudent.getAge());// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			if (mStudent.getSex() != null) {
+				
+				add_student_gender_et.setText(mStudent.getSex() );// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			if (mStudent.getTemper()!= null) {
+				
+				add_student_temper_tv.setText(mStudent.getTemper());// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			
+			if (mStudent.getAddress()!= null) {
+				
+				add_student_address_et.setText(mStudent.getAddress());// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			if (mStudent.getPhoneNum()!= null) {
+				
+				add_student_phone_num_et.setText(mStudent.getPhoneNum());// ç©ºæŒ‡é’ˆå¼‚å¸¸
+			}
+			
+		}
 
 	}
 
-
-
-	
-	
 	@Override
 	public void updateTemperature(String tem) {
-		//TODO ÊµÊ±¸üĞÂÎÂ¶ÈÏÔÊ¾Öµ
-		Log.i(TAG, "ÎÂ¶ÈÎª£º"+tem);
-		
-		Message msg=Message.obtain();
-		msg.what=TEMPERATURE_CHANGED;
-		msg.obj=tem;
+		// TODO å®æ—¶æ›´æ–°æ¸©åº¦æ˜¾ç¤ºå€¼
+		Log.i(TAG, "æ¸©åº¦ä¸ºï¼š" + tem);
+
+		Message msg = Message.obtain();
+		msg.what = TEMPERATURE_CHANGED;
+		msg.obj = tem;
 		mHandler.sendMessage(msg);
-		
-		
+
 	}
 
 	@Override
@@ -170,45 +184,71 @@ public class AddStudentActivity extends Activity implements TemperatureObserver,
 			finish();
 			break;
 		case R.id.add_student_finished_tv:
-			
+
 			saveStudent();
-			
+
 			finish();
 			break;
 
 		default:
 			break;
 		}
-		
+
 	}
 
-	//±£´æÑ§ÉúĞÅÏ¢
+	/**
+	 * ä¿å­˜å­¦ç”Ÿä¿¡æ¯
+	 */
 	private void saveStudent() {
-		mStudent=new Student();
 		mStudent.setDeviceID(add_student_device_id_et.getText().toString());
-		mStudent.setName(add_student_name_et.getText().toString());
-		mStudent.setAge(add_student_age_et.getText().toString());
-		mStudent.setStuNo(add_student_stuno_et.getText().toString());
-		mStudent.setSex(add_student_gender_et.getText().toString());
+		String name = add_student_name_et.getText().toString();
+		if (!StringUtils.isEmptyOrNull(name)) {
+
+			mStudent.setName(name);
+		}
+		String age = add_student_age_et.getText().toString();
+		if (!StringUtils.isEmptyOrNull(age)) {
+
+			mStudent.setAge(age);
+		}
+
+		String stuNo = add_student_stuno_et.getText().toString();
+		if (!StringUtils.isEmptyOrNull(stuNo)) {
+
+			mStudent.setStuNo(stuNo);
+		}
+
+		String gender = add_student_gender_et.getText().toString();
+		if (!StringUtils.isEmptyOrNull(gender)) {
+
+			mStudent.setSex(gender);
+		}
 		mStudent.setTemper(add_student_temper_tv.getText().toString());
-		mStudent.setAddress(add_student_address_et.getText().toString());
-		mStudent.setPhoneNum(add_student_phone_num_et.getText().toString());
-		
+		String address = add_student_address_et.getText().toString();
+		if (!StringUtils.isEmptyOrNull(address)) {
+
+			mStudent.setAddress(address);
+		}
+		String photoNum = add_student_phone_num_et.getText().toString();
+		if (!StringUtils.isEmptyOrNull(photoNum)) {
+
+			mStudent.setPhoneNum(photoNum);
+		}
+
 		if (!mStudent.getDeviceID().isEmpty()) {
-			
-			boolean isStudentExist=StudentDao.isExistDevice(mStudent.getDeviceID());
-			
+
+			boolean isStudentExist = StudentDao.isExistDevice(mStudent
+					.getDeviceID());
+
 			if (isStudentExist) {
-				//´æÔÚ¸ÃÑ§Éú
+				// å­˜åœ¨è¯¥å­¦ç”Ÿ
 				StudentDao.getStudentDao(mContext).updateStudent(mStudent);
-			}else{
-				
+			} else {
+
 				StudentDao.getStudentDao(mContext).addStudent(mStudent);
 			}
 		}
-		
-	}
 
-	
+	}
 
 }

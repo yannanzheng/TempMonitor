@@ -3,7 +3,7 @@ package com.ormlitedemo.utils;
 public class StringUtils {
 	
 	/**
-	 * ½«ÎÂ¶ÈÊı¾İ×ª»»³ÉÊ®Áù½øÖÆÊı¾İ×Ö·û´®ĞÎÊ½
+	 * å°†æ¸©åº¦æ•°æ®è½¬æ¢æˆåå…­è¿›åˆ¶æ•°æ®å­—ç¬¦ä¸²å½¢å¼
 	 * @param src
 	 * @return
 	 */
@@ -28,10 +28,17 @@ public class StringUtils {
 			stringBuilder.append(hv);
 			
 		}
-		System.out.println("½âÎö¹ıºóµÄÊı¾İ£º"+stringBuilder.toString());
+		System.out.println("è§£æè¿‡åçš„æ•°æ®ï¼š"+stringBuilder.toString());
 		
 		return stringBuilder.toString();
 
+	}
+	
+	public static boolean isEmptyOrNull(String str){
+		if (str==null||str.trim().equals("")) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static String parseTemperature(String strData){

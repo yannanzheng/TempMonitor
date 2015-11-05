@@ -4,20 +4,18 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import com.ormlitedemo.dao.StudentDao;
 import com.ormlitedemo.utils.StringUtils;
 
 /**
- * ²ÉÓÃ¹Û²ìÕßÄ£Ê½¶ÔÌåÎÂ±ä»¯½øĞĞ¼à¿Ø
+ * é‡‡ç”¨è§‚å¯Ÿè€…æ¨¡å¼å¯¹ä½“æ¸©å˜åŒ–è¿›è¡Œç›‘æ§
  * @author jfy
  *
  */
-public class TemperatureData implements Runnable,TemperatureSubject,NetworkStateChangedCallback {
+public class TemperatureData implements 
+
+Runnable,TemperatureSubject,NetworkStateChangedCallback {
 
 	private static final String TAG = "TemperatureData";
 	//private TemperatureObserver temperListener;
@@ -45,33 +43,37 @@ public class TemperatureData implements Runnable,TemperatureSubject,NetworkState
 	@Override
 	public void run() {
 		
-		Log.i(TAG, "run·½·¨ÔËĞĞÒ»´Î");
+		Log.i(TAG, "runæ–¹æ³•è¿è¡Œä¸€æ¬¡");
 		
 		try {
 			socket = new Socket("192.168.2.3", 5000);
 			
 			boolean connectState=socket.isConnected();
 			
-			Log.i(TAG, "SocketÁ¬½Ó×´Ì¬Îª"+connectState);
+			Log.i(TAG, "Socketè¿æ¥çŠ¶æ€ä¸º"+connectState);
 			
 			if (connectState) {
 
-				//Á¬½ÓÉÏÁË¸ÃÓ²¼şµÄÇé¿öÏÂ£¬
+				//è¿æ¥ä¸Šäº†è¯¥ç¡¬ä»¶çš„æƒ…å†µä¸‹ï¼Œ
 				InputStream in = socket.getInputStream();
 				byte[] byteSrc = new byte[1024];
 				//int length = -1;
 				while (true) {
 					int length = in.read(byteSrc);
-					//System.out.println("¶ÁÈ¡µ½µÄÊı¾İµÄ³¤¶È--->"+length);
-					Log.i(TAG, "Ô­Ê¼×Ö½ÚÊı¾İ" + byteSrc.toString());
-					String strSrc=StringUtils.bytesToHexString(byteSrc, length);
+					//System.out.println("è¯»å–åˆ°çš„æ•°æ®çš„é•¿åº¦--->"+length);
+					Log.i(TAG, "åŸå§‹å­—èŠ‚æ•°æ®" + byteSrc.toString());
+					String strSrc=StringUtils.bytesToHexString
+
+(byteSrc, length);
 					
 					
-					//×Ö·û´®
+					//å­—ç¬¦ä¸²
 					for (int i = 0; i < length; i++) {
 						
 						if (byteSrc[i]==-1) {
-							Log.i(TAG, "***********************¿ªÊ¼Ò»Ìõ**************************");
+							Log.i(TAG, 
+
+"***********************å¼€å§‹ä¸€æ¡**************************");
 							byte[] data=new byte[10];
 							data[0]=byteSrc[i+1];
 							data[1]=byteSrc[i+2];
@@ -83,11 +85,15 @@ public class TemperatureData implements Runnable,TemperatureSubject,NetworkState
 							data[7]=byteSrc[i+8];
 							data[8]=byteSrc[i+9];
 							data[9]=byteSrc[i+10];
-							String strData=StringUtils.bytesToHexString(data, data.length);
+							String 
+
+strData=StringUtils.bytesToHexString(data, data.length);
 							
 							notifyObservers(strData);
 							
-							Log.i(TAG, "***********************½áÊøÒ»Ìõ**************************");
+							Log.i(TAG, 
+
+"***********************ç»“æŸä¸€æ¡**************************");
 						}
 						
 						
@@ -135,7 +141,7 @@ public class TemperatureData implements Runnable,TemperatureSubject,NetworkState
 
 	@Override
 	public void networkStateChangedCallback() {
-		Log.i(TAG, "»Øµ÷£¬ÍøÂç×´Ì¬·¢ÉúÁË¸Ä±ä");
+		Log.i(TAG, "å›è°ƒï¼Œç½‘ç»œçŠ¶æ€å‘ç”Ÿäº†æ”¹å˜");
 		this.run();
 		
 	}

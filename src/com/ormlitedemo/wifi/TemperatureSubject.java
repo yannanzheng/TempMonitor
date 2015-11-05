@@ -1,24 +1,24 @@
 package com.ormlitedemo.wifi;
 
 /**
- * Ö÷Ìâ£¬¹Û²ìÕß¹Û²ìµÄ¶ÔÏó
+ * ä¸»é¢˜ï¼Œè§‚å¯Ÿè€…è§‚å¯Ÿçš„å¯¹è±¡
  * @author jfy
  *
  */
 public interface TemperatureSubject {
   
 	/**
-	 * ×¢²á¹Û²ìÕß
+	 * æ³¨å†Œè§‚å¯Ÿè€…
 	 * @param tempObj
 	 */
 	public void registerObserver(TemperatureObserver tempObj);
 	/**
-	 * È¡Ïû¹Û²ìÕß
+	 * å–æ¶ˆè§‚å¯Ÿè€…
 	 * @param tempObj 
 	 */
   public void removeObserver(TemperatureObserver tempObj);
   /**
-   * Í¨Öª£¬²¢´«µİÉè±¸idºÍÓëÖ®¶ÔÓ¦µÄÎÂ¶ÈĞÅÏ¢
+   * é€šçŸ¥ï¼Œå¹¶ä¼ é€’è®¾å¤‡idå’Œä¸ä¹‹å¯¹åº”çš„æ¸©åº¦ä¿¡æ¯
    * @param strData
    */
   public void notifyObservers(String strData);

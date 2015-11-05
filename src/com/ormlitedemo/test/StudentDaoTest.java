@@ -26,7 +26,7 @@ public class StudentDaoTest extends AndroidTestCase{
 		stu1.setDeviceID(1+"");
 		stu1.setName("zhangsan");
 		stu1.setAge("2");
-		Log.i(TAG, "Ñ§Éú1£º"+stu1.toString());
+		Log.i(TAG, "å­¦ç”Ÿ1ï¼š"+stu1.toString());
 		
 		Student stu2=new Student();
 		Student stu3=new Student();
@@ -43,7 +43,7 @@ public class StudentDaoTest extends AndroidTestCase{
 		
 		Context context=getContext();
 		StudentDao dao=StudentDao.getStudentDao(getContext());
-		Log.i(TAG, "Êı¾İ¿âÀïµÄÑ§ÉúÓĞ"+stus.size()+"‚€");
+		Log.i(TAG, "æ•°æ®åº“é‡Œçš„å­¦ç”Ÿæœ‰"+stus.size()+"å€‹");
 		dao.addStudent(stu1);
 		dao.addStudent(stu2);
 		dao.addStudent(stu3);
@@ -56,19 +56,19 @@ public class StudentDaoTest extends AndroidTestCase{
 		
 		
 		printStudents(stus);
-		Log.i(TAG, "Êı¾İ¿âÀïµÄÑ§ÉúÓĞ"+stus.size()+"‚€");
+		Log.i(TAG, "æ•°æ®åº“é‡Œçš„å­¦ç”Ÿæœ‰"+stus.size()+"å€‹");
 		
 	}
 	
 	
 	/**
-	 * ²âÊÔÕÒµ½Ò»¸öÑ§Éú
+	 * æµ‹è¯•æ‰¾åˆ°ä¸€ä¸ªå­¦ç”Ÿ
 	 */
 	public void testGetStudent(){
 		String stuNO="4";
 		StudentDao dao=StudentDao.getStudentDao(getContext());
 		Student stu=dao.getStudentById(stuNO);
-		Log.i(TAG, "ÕÒµ½µÄÑ§ÉúÊÇ"+stu.toString());
+		Log.i(TAG, "æ‰¾åˆ°çš„å­¦ç”Ÿæ˜¯"+stu.toString());
 		
 	}
 	
@@ -111,9 +111,9 @@ public class StudentDaoTest extends AndroidTestCase{
 	public void printStudents(List<Student> stus){
 		for (Student stu : stus) {
 			if (!stus.isEmpty()) {
-				Log.i(TAG, "ŒWÉúé:"+stu.toString());
+				Log.i(TAG, "å­¸ç”Ÿç‚º:"+stu.toString());
 			}else {
-				Log.i(TAG, "»¹Ã»ÓĞÑ§Éú");
+				Log.i(TAG, "è¿˜æ²¡æœ‰å­¦ç”Ÿ");
 			}
 		}
 	}

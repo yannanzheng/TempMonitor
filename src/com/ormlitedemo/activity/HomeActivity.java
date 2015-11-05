@@ -1,8 +1,11 @@
 package com.ormlitedemo.activity;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,6 +23,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -56,29 +61,26 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 				String strData=(String)msg.obj;
 				String strDeviceId=StringUtils.parseDeviceId(strData);
 				String strTemp=StringUtils.parseTemperature(strData);
-				Log.i(TAG, "À´ĞÅÏ¢À²£¡"+strData);
+				Log.i(TAG, "ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½"+strData);
 				
 				
 				Student stu=new Student();
 				stu.setDeviceID(strDeviceId);
 				stu.setTemper(strTemp);
 				if (StudentDao.isExistDevice(strDeviceId)) {
-					//´æÔÚ¸ÃÑ§Éú£¬¸üĞÂÎÂ¶È
-					Log.i(TAG, "´æÔÚÑ§Éú"+strData);
-					//Ó¦¸ÃÎÊÌâ³öÔÚÕâÀï£¬¸üĞÂµÄÊÇÕû¸öÑ§ÉúµÄÊı¾İ£¬¶ø²»½ö½öÊÇÎÂ¶ÈÁË
+					Log.i(TAG, "ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½"+strData);
 					StudentDao.getStudentDao(mContext).updateTemperatureById(strDeviceId, strTemp);
 					
 				}else{
-					//²»´æÔÚ¸ÃÑ§Éú£¬ĞÂ½¨¸ÃÑ§ÉúÊı¾İ²¢±£´æÎÂ¶ÈÊı¾İ
-					Log.i(TAG, "²»´æÔÚÑ§Éú"+strData);
+					Log.i(TAG, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½"+strData);
 					stu.setName("zhangsan");
-					Log.i(TAG, "´´½¨Ñ§Éú"+stu.toString());
+					Log.i(TAG, "ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½"+stu.toString());
 					StudentDao.getStudentDao(mContext).addStudent(stu);
 					
 					
 				}
 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
-				Log.i(TAG, "²éÑ¯Ñ§Éú"+allStudentsList.toString());//²éÑ¯µ½µÄÎÊ¿Õ
+				Log.i(TAG, "ï¿½ï¿½Ñ¯Ñ§ï¿½ï¿½"+allStudentsList.toString());
 				adapterStudents.clear();
 				adapterStudents.addAll(allStudentsList);
 				
@@ -120,47 +122,56 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
         setContentView(R.layout.activity_home);  
         mContext = getApplicationContext(); 
         homeActivity=this;
+        Properties props=new Properties();
+        try {
+			InputStream in=mContext.getAssets().open("temperTable.properties");
+			props.load(in);
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         
         wifiManager = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
 		wifiInfo = wifiManager.getConnectionInfo();
 		strWifiSSID = wifiInfo.getSSID();
 		String strWiFi="\"R2WiFi\"";
-		Log.i(TAG, "Á¬½Óµ½µÄwifiÎª"+strWifiSSID);
+		Log.i(TAG, "ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½wifiÎª"+strWifiSSID);
 		
-		Log.i(TAG, "Á¬½Óµ½µÄwifiÎª"+strWifiSSID.equals(strWiFi));
+		Log.i(TAG, "ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½wifiÎª"+strWifiSSID.equals(strWiFi));
 		
 		
 		if (strWifiSSID.equals("R2WiFi")) {
-			Log.i(TAG, "ÒÑ¾­Á¬½ÓÉÏR2WiFi");
-			//²»ÖªÎªºÎ²»ÄÜ
+			Log.i(TAG, "ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½R2WiFi");
+			//ï¿½ï¿½ÖªÎªï¿½Î²ï¿½ï¿½ï¿½
 			
 		}else{
 			
-			Log.i(TAG, "ÇëÁ¬½ÓR2WiFi");
+			Log.i(TAG, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½R2WiFi");
 		}
 		
 		
 		temperatureData = TemperatureData.getTemperatureData();
 		if (strWifiSSID.equals(strWiFi)) {
-			Log.i(TAG, "ÒÑ¾­Á¬½ÓÉÏR2WiFi");
+			Log.i(TAG, "ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½R2WiFi");
 			thread = getThread(thread, temperatureData);
 			thread.start();
 		}else{
-			Toast.makeText(mContext, "ÇëÁ¬½ÓÉÏR2WiFi²¢ÖØĞÂÆô¶¯Ó¦ÓÃ", 1).show();
+			Toast.makeText(mContext, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½R2WiFiï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½", 1).show();
 		}
 		
        
-        //Ä£ÄâÊı¾İ½ÓÊÕ 
+        //Ä£ï¿½ï¿½ï¿½ï¿½ï¿½İ½ï¿½ï¿½ï¿½ 
  //       dataEngineMonitor(2000);
         initView();  
         
-        //È¥µô¸Ä¹¦ÄÜ
+        
 //        add_student_tv.setOnClickListener(new OnClickListener() {
 //			
 //			@Override
 //			public void onClick(View v) {
-//				//TODO Ìí¼ÓÑ§Éú
-//				//Toast.makeText(mContext, "Ìí¼ÓÑ§Éú", 0).show();
+//				//TODO ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½
+//				//Toast.makeText(mContext, "ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½", 0).show();
 //				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
 //				//startActivity(intent);
 //				
@@ -184,12 +195,38 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 				
 				Intent intent=new Intent(getApplicationContext(),AddStudentActivity.class);
 				Student stu=(Student) parent.getAdapter().getItem(position);
-				Log.i(TAG, "Ñ§ÉúÌõÄ¿Êı¾İ"+stu.toString());
+				Log.i(TAG, "Ñ§ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½"+stu.toString());
 				intent.putExtra("student", stu);
 				//intent.put
 				startActivityForResult(intent, 40);
-				//Toast.makeText(mContext, "µã»÷ÏîÄ¿ÊÇ"+position, 0).show();
+				//Toast.makeText(mContext, "ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½"+position, 0).show();
 				
+			}
+		});
+     	stuListView.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+     	
+     	
+     	stuListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Toast.makeText(mContext, "é•¿æŒ‰äº†"+position+"æ¡ç›®", 1).show();
+				return false;
 			}
 		});
      	
@@ -223,12 +260,12 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 		adapterStudents.clear();
      	adapterStudents.addAll(allStudentsList);
      	
-     	temperatureData.registerObserver(this);//¿ÕÖ¸ÕëÒì³£
+     	temperatureData.registerObserver(this);//ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ì³£
 		
 	}
 
 
-	//*************************************Ä£ÄâÊı¾İÉÏ±ß½ç***************************************************
+	//*************************************æ•°æ®æ¨¡æ‹Ÿå¼•æ“***************************************************
 private int j=0;
 public static TemperatureData temperatureData;
 private Thread thread;
@@ -236,8 +273,8 @@ private WifiManager wifiManager;
 private WifiInfo wifiInfo;
 private String strWifiSSID;
    /**
-    * Ä£ÄâÊı¾İ·¢ËÍ
-    * @param delay Êı¾İ·¢ËÍµÄ¼ä¸ôÊ±¼ä
+    * Ä£ï¿½ï¿½ï¿½ï¿½ï¿½İ·ï¿½ï¿½ï¿½
+    * @param delay ï¿½ï¿½ï¿½İ·ï¿½ï¿½ÍµÄ¼ï¿½ï¿½Ê±ï¿½ï¿½
     */
 	private void dataEngineMonitor(long delay) {
 		
@@ -249,10 +286,10 @@ private String strWifiSSID;
 			public void run() {
 				
 				j++;
-				Log.i(TAG, "¶¨Ê±Æ÷ÔËĞĞÁË"+j+"´Î");
+				Log.i(TAG, "ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"+j+"ï¿½ï¿½");
 				
 				for (int i = 0; i < adapterStudents.size(); i++) {
-					adapterStudents.get(i).setTemper(j+"ÉãÊÏ¶È");
+					adapterStudents.get(i).setTemper(j+"ï¿½ï¿½ï¿½Ï¶ï¿½");
 					
 					//adapter.notifyDataSetChanged();
 					Message msg=Message.obtain();
@@ -267,11 +304,11 @@ private String strWifiSSID;
 	}
 	
 	
-	//*************************************Ä£ÄâÊı¾İÏÂ±ß½ç***************************************************
+	//*************************************Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â±ß½ï¿½***************************************************
 
 
     /**
-     * ½«Êı¾İ¿âÖĞµÄÎÂ¶È¸üĞÂÎª×îĞÂµÄÎÂ¶È
+     * ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğµï¿½ï¿½Â¶È¸ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Âµï¿½ï¿½Â¶ï¿½
      */
 	private void updateTemper(String temp) {
 		allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
@@ -285,8 +322,8 @@ private String strWifiSSID;
 				adapterStudents.addAll(allStudentsList);
 				
 			}else {
-				Log.i(TAG, "strTempÎª¿Õ");
-				allStudentsList.get(i).setTemper("36.5ÉãÊÏ¶È");
+				Log.i(TAG, "strTempÎªï¿½ï¿½");
+				allStudentsList.get(i).setTemper("36.5ï¿½ï¿½ï¿½Ï¶ï¿½");
 				
 				StudentDao.getStudentDao(mContext).updateStudent(allStudentsList.get(i));
 			}
@@ -340,7 +377,7 @@ private String strWifiSSID;
             holder.student_number_tv.setText(objStu.getStuNo());  
             holder.student_name_tv.setText(objStu.getName());  
             holder.student_temper_tv.setText(objStu.getTemper());
-            //×öÑÕÉ«±ê¼Ç
+            //ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½
             if ("107743" == objStu.getDeviceID())
                  holder.student_temper_tv.setTextColor(android.graphics.Color.RED);
             
@@ -356,15 +393,15 @@ private String strWifiSSID;
 
 	@Override
 	public void updateTemperature(String strData) {
-		//ÎÂ¶È¸Ä±äÁË
-		//Log.i(TAG, "ÎÂ¶È¸Ä±äÁË¡£¡£¡£"+temper);//²âÊÔ»Øµ÷³É¹¦
+		//ï¿½Â¶È¸Ä±ï¿½ï¿½ï¿½
+		//Log.i(TAG, "ï¿½Â¶È¸Ä±ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½ï¿½"+temper);//ï¿½ï¿½ï¿½Ô»Øµï¿½ï¿½É¹ï¿½
 		Message msg=Message.obtain();
 		msg.what=TEMPERATURE_CHANGED;
 		msg.obj=strData;
 		//updateTemper(temper);
 //		for (int i = 0; i < adapterStudents.size(); i++) {
 //			
-//			adapterStudents.get(i).setTemper(strData+"ÉãÊÏ¶È");
+//			adapterStudents.get(i).setTemper(strData+"ï¿½ï¿½ï¿½Ï¶ï¿½");
 //			
 //		}
 		mHandler.sendMessage(msg);
@@ -375,9 +412,9 @@ private String strWifiSSID;
 
 	@Override
 	public synchronized void networkStateChangedCallback() {
-		Log.i(TAG, "HomeActivity½ÓÊÕµ½ÁË¹ã²¥ĞÅÏ¢");
+		Log.i(TAG, "HomeActivityï¿½ï¿½ï¿½Õµï¿½ï¿½Ë¹ã²¥ï¿½ï¿½Ï¢");
 		
-		//Ó¦¸Ã¼ì²éÊÇ·ñÎªËùĞèÒªµÄÍøÂç£¬Èç¹ûÊÇ¾Í½«¿ªÆôÏß³Ì
+		//Ó¦ï¿½Ã¼ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ç£¬ï¿½ï¿½ï¿½ï¿½Ç¾Í½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½
 		
 		String strWifiSSID = wifiManager.getConnectionInfo().getSSID().trim();
 		Log.i(TAG, "ssid="+strWifiSSID);
@@ -386,10 +423,10 @@ private String strWifiSSID;
 		
 		Log.i(TAG, "ssidequals(strWifiSSID)"+"R2WiFi".equals(strWifiSSID));
 		if ("\"R2WiFi\"".equals(strWifiSSID)) {
-			Log.i(TAG, "ÒÑ¾­Á¬½ÓÉÏR2WiFi");
+			Log.i(TAG, "ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½R2WiFi");
 			
 			if (!thread.isAlive()) {
-				//Á½´ÎÆô¶¯µ¼ÖÂ±ÀÀ£
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½ï¿½ï¿½
 				
 				thread.start();
 				
