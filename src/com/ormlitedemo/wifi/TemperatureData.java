@@ -3,6 +3,7 @@ package com.ormlitedemo.wifi;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.util.Log;
 
@@ -20,13 +21,14 @@ Runnable,TemperatureSubject,NetworkStateChangedCallback {
 	private static final String TAG = "TemperatureData";
 	//private TemperatureObserver temperListener;
 	private String temperature="";
-	public ArrayList<TemperatureObserver> observers;
+	//TODO 重新考虑是否使用这个集合，毕竟线程并不安全
+	public Vector<TemperatureObserver> observers;
 	private static TemperatureData temperatureData=null;
 	private Socket socket;
 
 
 	private TemperatureData() {
-		observers=new ArrayList<TemperatureObserver>();
+		observers=new Vector<TemperatureObserver>();
 		
 	}
 	
@@ -114,14 +116,14 @@ strData=StringUtils.bytesToHexString(data, data.length);
 
 
 	@Override
-	public void registerObserver(TemperatureObserver tempObj) {
+	public synchronized void registerObserver(TemperatureObserver tempObj) {
 		observers.add(tempObj);
 		
 	}
 
 
 	@Override
-	public void removeObserver(TemperatureObserver tempObj) {
+	public synchronized void removeObserver(TemperatureObserver tempObj) {
 
 		int i=observers.indexOf(tempObj);
 		if (i>=0) {

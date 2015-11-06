@@ -76,7 +76,6 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 					
 				}
 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
-				Log.i(TAG, "��ѯѧ��"+allStudentsList.toString());
 				adapterStudents.clear();
 				adapterStudents.addAll(allStudentsList);
 				
