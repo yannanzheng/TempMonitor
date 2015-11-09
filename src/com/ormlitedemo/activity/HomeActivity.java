@@ -66,13 +66,13 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 				Student stu=null;
 				if (StudentDao.isExistDevice(strDeviceId)) {
 					StudentDao.getStudentDao(mContext).updateTemperatureById(strDeviceId, strTemp);
-					
+					//添加时间，体温数据
 				}else{
 					stu=new Student();
 					stu.setDeviceID(strDeviceId);
 					stu.setTemper(strTemp);
 					StudentDao.getStudentDao(mContext).addStudent(stu);
-					
+					//创建文件并添加时间体温数据
 					
 				}
 				allStudentsList=StudentDao.getStudentDao(mContext).getAllStudent();
