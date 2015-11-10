@@ -1,6 +1,10 @@
 package com.ormlitedemo.activity;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +68,31 @@ public class HomeActivity extends Activity implements TemperatureObserver,Networ
 				String strTemp=TemperatureTableUtil.queryTemperatureByData(mContext, strTempData);
 				Log.w(TAG, "查询到的体温为: "+strTemp);
 				Student stu=null;
+				//String basePath="/data/data/com.ormlitedemo/abcde.txt";
+				
+				File file=new File(getFilesDir(), "abc.txt");
+				String strFile=file.getAbsolutePath();
+				
+				try {
+					FileOutputStream fos = openFileOutput(strFile, MODE_WORLD_READABLE);
+					fos.write("yangjunfei".getBytes());
+					fos.flush();
+					fos.close();
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				
+				
 				if (StudentDao.isExistDevice(strDeviceId)) {
 					StudentDao.getStudentDao(mContext).updateTemperatureById(strDeviceId, strTemp);
 					//添加时间，体温数据
+					//创建文件
+					
+					
 				}else{
 					stu=new Student();
 					stu.setDeviceID(strDeviceId);
